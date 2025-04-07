@@ -1,0 +1,102 @@
+.about-container {
+  padding: 40px 20px;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.about-description {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-image-container {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.about-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.about-values {
+  background: #f9f9f9;
+  padding: 40px 20px;
+  margin-bottom: 40px;
+  border-radius: 8px;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.values-list {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 800px;
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.cta-container {
+  background: #2575fc;
+  color: white;
+  padding: 40px 20px;
+  border-radius: 8px;
+}
+
+.cta-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.cta-button {
+  padding: 12px 25px;
+  font-size: 1rem;
+  color: #2575fc;
+  background: white;
+  border: none;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  background: #1e66c3;
+  color: white;
+}
+
+.back-to-home {
+  font-size: 1rem;
+  color: #2575fc;
+  margin-top: 20px;
+}
+
+.back-to-home a {
+  text-decoration: none;
+  color: #2575fc;
+  font-weight: bold;
+}
+
+.back-to-home a:hover {
+  color: #1e66c3;
+}

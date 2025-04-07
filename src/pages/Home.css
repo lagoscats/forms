@@ -1,0 +1,50 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #74ebd5, #9face6);
+  text-align: center;
+  padding: 20px;
+}
+
+.home-container h1 {
+  font-size: 3rem;
+  color: #fff;
+  margin-bottom: 40px;
+}
+
+.button-container {
+  display: flex;
+  gap: 20px;
+}
+
+.signup-btn,
+.login-btn {
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.signup-btn {
+  background-color: #ffffff;
+  color: #2575fc;
+}
+
+.signup-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.login-btn {
+  background-color: #2575fc;
+  color: white;
+}
+
+.login-btn:hover {
+  background-color: #1e66c3;
+}
