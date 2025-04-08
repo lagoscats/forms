@@ -1,155 +1,117 @@
-/* Login.css */
-
-/* Basic container styling for the login form */
+/* General Layout */
 .login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #e0e8f9, #f1f7fe);
+  padding: 1rem;
+}
+
+.login-card {
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
   width: 100%;
   max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 1s ease-out; /* Adding a fade-in animation */
-}
-
-/* Header styling */
-.login-container h2 {
   text-align: center;
-  color: #333;
-  font-size: 24px;
-  margin-bottom: 20px;
-  animation: slideIn 1s ease-out; /* Adding a sliding animation */
 }
 
-/* Form styling */
-form {
+.login-card h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.login-form {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Adding gap between form inputs */
+  gap: 15px;
+  text-align: left;
 }
 
-input {
+.login-form label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.login-input {
   padding: 12px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-  transition: all 0.3s ease;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
 }
 
-input:focus {
-  border-color: #4CAF50;
+.login-input:focus {
+  border-color: #007bff;
   outline: none;
-  transform: translateY(-5px); /* Adding a floating effect when focused */
 }
 
-button {
-  padding: 12px;
-  background-color: #4CAF50;
+.login-button {
+  margin-top: 15px;
+  background-color: #007bff;
   color: white;
+  padding: 12px;
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
   transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #45a049;
+.login-button:hover {
+  background-color: #0056b3;
 }
 
-button:active {
-  transform: scale(0.98); /* Adding a subtle shrink effect on button click */
+.footer {
+  margin-top: 20px;
+  font-size: 0.95rem;
+  color: #444;
 }
 
-/* Error message styling */
+.footer .link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer .link:hover {
+  text-decoration: underline;
+}
+
 .error-message {
   color: red;
-  text-align: center;
-  font-size: 14px;
+  font-size: 0.9rem;
   margin-bottom: 10px;
-  animation: shake 0.5s ease-in-out; /* Adding a shake animation for errors */
 }
-
-/* Footer section below the form */
-.login-footer {
-  text-align: center;
+.bouncing-loader {
+  display: flex;
+  justify-content: center;
   margin-top: 20px;
-  font-size: 14px;
 }
 
-.login-footer p {
-  margin: 5px 0;
+.bouncing-loader > div {
+  width: 10px;
+  height: 10px;
+  margin: 3px;
+  background-color: #3498db;
+  border-radius: 50%;
+  animation: bounce 0.6s infinite alternate;
 }
 
-/* Styling for the 'Go to Home' link */
-.home-link {
-  color: #4CAF50;
-  text-decoration: none;
-  font-weight: bold;
-  transition: all 0.3s ease;
+.bouncing-loader > div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.bouncing-loader > div:nth-child(3) {
+  animation-delay: 0.4s;
 }
 
-.home-link:hover {
-  text-decoration: underline;
-  color: #388E3C;
-}
-
-/* Styling for the 'Signup' link */
-.signup-link {
-  color: #007BFF;
-  text-decoration: none;
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-.signup-link:hover {
-  text-decoration: underline;
-  color: #0056b3;
-}
-
-/* Media Queries for Responsiveness */
-@media (max-width: 600px) {
-  .login-container {
-    padding: 15px;
-  }
-
-  .login-container h2 {
-    font-size: 20px;
-  }
-
-  .home-link, .signup-link {
-    font-size: 14px;
-  }
-}
-
-/* Keyframe Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
+@keyframes bounce {
   to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes shake {
-  0% {
-    transform: translateX(-10px);
-  }
-  50% {
-    transform: translateX(10px);
-  }
-  100% {
-    transform: translateX(0);
+    transform: translateY(-100%);
   }
 }

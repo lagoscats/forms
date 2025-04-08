@@ -63,8 +63,8 @@ const Contact = () => {
         Contact Us
       </motion.h1>
 
-      {successMessage && <p className="success-message">{successMessage}</p>}
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {successMessage && <motion.p className="success-message" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>{successMessage}</motion.p>}
+      {errorMessage && <motion.p className="error-message" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>{errorMessage}</motion.p>}
 
       <motion.form
         className="contact-form"
@@ -73,7 +73,7 @@ const Contact = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.5 }}
       >
-        <input
+        <motion.input
           type="text"
           name="name"
           placeholder="Your Name"
@@ -81,8 +81,10 @@ const Contact = () => {
           onChange={handleChange}
           required
           aria-label="Your Name"
+          whileFocus={{ scale: 1.05 }}
+          transition={{ duration: 0.3 }}
         />
-        <input
+        <motion.input
           type="email"
           name="email"
           placeholder="Your Email"
@@ -90,18 +92,27 @@ const Contact = () => {
           onChange={handleChange}
           required
           aria-label="Your Email"
+          whileFocus={{ scale: 1.05 }}
+          transition={{ duration: 0.3 }}
         />
-        <textarea
+        <motion.textarea
           name="message"
           placeholder="Your Message"
           value={formData.message}
           onChange={handleChange}
           required
           aria-label="Your Message"
+          whileFocus={{ scale: 1.05 }}
+          transition={{ duration: 0.3 }}
         />
-        <button type="submit" disabled={isSubmitting}>
+        <motion.button
+          type="submit"
+          disabled={isSubmitting}
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.3 }}
+        >
           {isSubmitting ? "Sending..." : "Send Message"}
-        </button>
+        </motion.button>
       </motion.form>
     </div>
   );
