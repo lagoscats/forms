@@ -1,3 +1,4 @@
+/* Base Styles */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -17,52 +18,23 @@
   text-decoration: none;
 }
 
-.navbar-left {
-  display: flex;
-  align-items: center;
-}
-
 .nav-links {
   list-style: none;
   display: flex;
   gap: 25px;
   margin-left: 30px;
+  transition: all 0.3s ease;
 }
 
-.nav-links li a,
-.nav-links li span {
+.nav-links li a {
   text-decoration: none;
   color: #444;
   font-weight: 500;
   cursor: pointer;
 }
 
-.nav-links li a:hover,
-.nav-links li span:hover {
+.nav-links li a:hover {
   color: #2575fc;
-}
-
-.dropdown-parent {
-  position: relative;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 40px;
-  left: 0;
-  background: white;
-  padding: 10px 0;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-}
-
-.dropdown-menu li {
-  padding: 8px 20px;
-}
-
-.dropdown-menu li:hover {
-  background: #f5f5f5;
 }
 
 .navbar-right {
@@ -98,64 +70,67 @@
   object-fit: cover;
 }
 
-/* Mobile View */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 18px;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.hamburger span {
+  height: 3px;
+  width: 100%;
+  background: #333;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translateY(7px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translateY(-7px);
+}
+
+/* Mobile Styles */
 @media (max-width: 768px) {
-  .navbar {
-    padding: 15px 20px;
+  .hamburger {
+    display: flex;
   }
 
   .nav-links {
-    display: none; /* Hide the navigation links on small screens */
     position: absolute;
-    top: 80px;
+    top: 70px;
     left: 0;
     width: 100%;
     background-color: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    padding: 10px 0;
-    z-index: 10;
+    padding: 15px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
   }
 
   .nav-links.active {
     display: flex;
-  }
-
-  .nav-links li {
-    width: 100%;
-    text-align: center;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
   .navbar-right {
-    display: none; /* Hide the profile photo and buttons on small screens */
-  }
-
-  .navbar-left {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .hamburger {
-    display: block;
-    cursor: pointer;
-    font-size: 30px;
-  }
-
-  .hamburger.active {
     display: none;
-  }
-}
-
-/* Tablet View */
-@media (max-width: 1024px) {
-  .navbar {
-    padding: 15px 25px;
-  }
-
-  .nav-links {
-    gap: 20px;
   }
 }

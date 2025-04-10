@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -17,20 +17,32 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+  
+    const payload = {
+      username: formData.username,
+      password: formData.password,
+    };
+  
     try {
-      const res = await axios.post('http://localhost:8000/api/token/', formData);
+      console.log('Submitting login:', payload); // Debugging
+      const res = await axios.post('http://localhost:8000/api/token/', payload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
       localStorage.setItem('access', res.data.access);
       localStorage.setItem('refresh', res.data.refresh);
       alert('Logged in successfully!');
       navigate('/dashboard');
     } catch (err) {
-      console.error(err.response?.data || err.message);
+      console.error('Login error:', err.response?.data || err.message);
       setError('Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className="login-container">
       <motion.div

@@ -1,13 +1,14 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom'; // ✅ Use HashRouter
 import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import Navbar from './components/Navbar'; // Assuming Navbar is already in place
+import Navbar from './components/Navbar';
 import About from './components/About';
 import Contact from './components/Contact';
 import Services from './components/Services';
+import Footer from './components/Footer';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/footer" element={<Footer />} />
         </Routes>
       </div>
     </Router>
