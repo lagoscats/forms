@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './Login.css';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import '../pages/Login.css'; // Your styles here
 
 const Login = () => {
-  const [formData, setFormData] = useState({ username: '', password: '' });
-  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -17,99 +20,63 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
-    const payload = {
-      username: formData.username,
-      password: formData.password,
-    };
+    setError('');
   
     try {
-      console.log('Submitting login:', payload); // Debugging
-      const res = await axios.post('http://localhost:8000/api/token/', payload, {
+      // Update the backend URL to the local IP address
+      const response = await axios.post('http://192.168.43.234:8000/api/token/', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
   
-      localStorage.setItem('access', res.data.access);
-      localStorage.setItem('refresh', res.data.refresh);
-      alert('Logged in successfully!');
+      localStorage.setItem('access', response.data.access);
+      localStorage.setItem('refresh', response.data.refresh);
+      localStorage.setItem('username', formData.username); // 👈 Store the username
+  
+      setLoading(false);
       navigate('/dashboard');
     } catch (err) {
-      console.error('Login error:', err.response?.data || err.message);
-      setError('Login failed. Please check your credentials.');
-    } finally {
       setLoading(false);
+      if (err.response && err.response.data) {
+        setError(err.response.data.detail || 'Invalid username or password');
+      } else {
+        setError('Network error, please try again.');
+      }
     }
   };
   
   return (
     <div className="login-container">
-      <motion.div
-        className="login-card"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-      >
-        <h2>Login</h2>
+      <form onSubmit={handleSubmit} className="login-form">
+        <h1>Login</h1>
+
+        <label htmlFor="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          required
+        />
+
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+
+        <button type="submit" disabled={loading}>
+          {loading ? 'Logging in...' : 'Log In'}
+        </button>
+
         {error && <p className="error-message">{error}</p>}
-        <form className="login-form" onSubmit={handleSubmit}>
-          <label htmlFor="username">Username</label>
-          <input
-            className="login-input"
-            id="username"
-            name="username"
-            type="text"
-            value={formData.username}
-            onChange={handleChange}
-            placeholder="Enter username"
-            required
-            disabled={loading}
-          />
-
-          <label htmlFor="password">Password</label>
-          <input
-            className="login-input"
-            id="password"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Enter password"
-            required
-            disabled={loading}
-          />
-
-          <motion.button
-            className="login-button"
-            type="submit"
-            disabled={loading}
-            whileHover={{ scale: loading ? 1 : 1.05 }}
-            whileTap={{ scale: loading ? 1 : 0.95 }}
-          >
-            {loading ? 'Logging in...' : 'Login'}
-          </motion.button>
-        </form>
-
-        {loading && (
-          <div className="login-loader">
-            <div className="bouncing-loader">
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-          </div>
-        )}
-
-        <div className="footer">
-          <p>
-            Don't have an account?{' '}
-            <Link to="/signup" className="link">
-              Sign Up
-            </Link>
-          </p>
-        </div>
-      </motion.div>
+      </form>
     </div>
   );
 };

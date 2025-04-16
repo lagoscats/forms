@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import "./Contact.css";
 
 const ads = [
@@ -35,8 +36,10 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+  const navigate = useNavigate();
 
   // Auto switch ad every 4 seconds
   useEffect(() => {
@@ -72,14 +75,21 @@ const Contact = () => {
     }
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/contact/", formData);
+      // Update the backend URL to use your local IP address
+      const response = await axios.post("http://192.168.43.234:8000/api/contact/", formData);  // Updated IP
+
       setSuccessMessage(response.data.message);
       setFormData({ name: "", email: "", message: "" });
+      setIsRedirecting(true);
+
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (error) {
       setErrorMessage("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setIsSubmitting(false);
   };
 
   return (
@@ -104,6 +114,7 @@ const Contact = () => {
         >
           {successMessage && <p className="success-message">{successMessage}</p>}
           {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {isRedirecting && <div className="spinner"></div>}
 
           <input
             type="text"
@@ -135,39 +146,38 @@ const Contact = () => {
 
         {/* Right: Ad Carousel */}
         <div className="contact-carousel">
-  <p className="sponsored-label">— Sponsored —</p>
-  <div className="carousel-wrapper">
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={ads[currentAdIndex].id}
-        className="carousel-ad"
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -50 }}
-        transition={{ duration: 0.6 }}
-      >
-        <img
-          src={ads[currentAdIndex].img}
-          alt={ads[currentAdIndex].alt}
-          className="carousel-image"
-        />
-        <div className="ad-text">
-          <h3>{ads[currentAdIndex].title}</h3>
-          <p>{ads[currentAdIndex].description}</p>
-          <a
-            href={ads[currentAdIndex].link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ad-button"
-          >
-            Learn More
-          </a>
+          <p className="sponsored-label">— Sponsored —</p>
+          <div className="carousel-wrapper">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={ads[currentAdIndex].id}
+                className="carousel-ad"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.6 }}
+              >
+                <img
+                  src={ads[currentAdIndex].img}
+                  alt={ads[currentAdIndex].alt}
+                  className="carousel-image"
+                />
+                <div className="ad-text">
+                  <h3>{ads[currentAdIndex].title}</h3>
+                  <p>{ads[currentAdIndex].description}</p>
+                  <a
+                    href={ads[currentAdIndex].link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ad-button"
+                  >
+                    Learn More
+                  </a>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
-      </motion.div>
-    </AnimatePresence>
-  </div>
-</div>
-
       </div>
     </div>
   );

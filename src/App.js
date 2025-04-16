@@ -9,6 +9,10 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Services from './components/Services';
 import Footer from './components/Footer';
+import Dashboard from './components/Dashboard';
+import Profile from './components/Profile';
+import Settings from './components/Settings';
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   return (
@@ -22,7 +26,15 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="/footer" element={<Footer />} />
+          <Route path="/dashboard" element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+    }
+  />
         </Routes>
       </div>
     </Router>

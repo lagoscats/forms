@@ -1,182 +1,163 @@
-/* Container & Card Styling */
+/* Signup Page Styles */
 .signup-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #f9f9f9, #e3eefe);
+  background-color: #f4f4f4;
   padding: 1rem;
-  position: relative;
+  box-sizing: border-box;
 }
 
-.signup-card {
-  background: #ffffff;
-  padding: 40px 30px;
-  border-radius: 16px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+.signup-form {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
+}
+
+h1 {
   text-align: center;
-  position: relative;
-  z-index: 1;
-}
-
-.signup-card h2 {
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 1.5rem;
   font-size: 1.8rem;
-}
-
-/* Form Styling */
-.signup-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  text-align: left;
-}
-
-.signup-form label {
-  font-size: 0.9rem;
-  font-weight: 500;
   color: #333;
 }
 
-.signup-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+label {
   font-size: 1rem;
-  transition: border-color 0.3s ease;
+  margin-bottom: 0.5rem;
+  display: block;
+  color: #555;
 }
 
-.signup-input:focus {
-  border-color: #007bff;
-  outline: none;
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1.2rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
 }
 
-/* Button Styling */
-.signup-button {
-  margin-top: 15px;
-  background-color: #007bff;
+button {
+  width: 100%;
+  padding: 1rem;
+  background-color: #4caf50;
   color: white;
-  padding: 12px;
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
+  font-size: 1.2rem;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
 }
 
-.signup-button:hover {
-  background-color: #0056b3;
+button:hover {
+  background-color: #45a049;
 }
 
-.signup-button:disabled {
-  background-color: #7aaeed;
-  cursor: not-allowed;
+/* Spinner Styles */
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
 }
 
-/* Link Styling */
-.signup-login-link {
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Success/Failure Messages */
+.success-message {
+  color: green;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.error-message {
+  color: red;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+/* Links Section */
+.links-container {
+  text-align: center;
   margin-top: 20px;
-  font-size: 0.9rem;
-  color: #444;
+  display: flex;
+  flex-direction: column;  /* Links stacked vertically */
+  gap: 10px;  /* Add spacing between links */
 }
 
-.signup-login-link a {
-  color: #007bff;
+.login-link,
+.home-link {
+  color: #3498db;
   text-decoration: none;
-  font-weight: 600;
 }
 
-.signup-login-link a:hover {
+.login-link:hover,
+.home-link:hover {
   text-decoration: underline;
 }
 
-/* Loader Overlay */
-.signup-loader {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.75);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(3px);
-  z-index: 2;
-  border-radius: 16px;
-}
+/* Responsive design */
+@media (max-width: 768px) {
+  .signup-form {
+      padding: 1rem;
+  }
 
-/* Bouncing Dots Animation */
-.bouncing-loader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-}
+  h1 {
+      font-size: 1.5rem;
+  }
 
-.bouncing-loader div {
-  width: 12px;
-  height: 12px;
-  background: #007bff;
-  border-radius: 50%;
-  animation: bounce 0.6s infinite alternate;
-}
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
+      padding: 0.6rem;
+  }
 
-.bouncing-loader div:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.bouncing-loader div:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes bounce {
-  to {
-    transform: translateY(-15px);
-    opacity: 0.6;
+  button {
+      padding: 0.8rem;
+      font-size: 1rem;
   }
 }
-.signup-loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.8); /* light overlay */
+.signup-button {
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 999;
+  justify-content: center;
+  gap: 10px; /* Space between text and spinner */
+  position: relative;
 }
 
-.bouncing-loader {
-  display: flex;
-  justify-content: space-between;
-  width: 60px;
+/* Spinner icon */
+.spinner-icon {
+  font-size: 20px;
+  color: white;
+  animation: spin 1s linear infinite;
 }
 
-.bouncing-loader > div {
-  width: 16px;
-  height: 16px;
-  background-color: #4a90e2;
-  border-radius: 50%;
-  animation: bounce 0.6s infinite alternate;
+/* Spinner rotation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-.bouncing-loader > div:nth-child(2) {
-  animation-delay: 0.2s;
+/* Fade and slide animation */
+.slide-fade-in {
+  opacity: 0;
+  transform: translateX(5px);
+  animation: slideFadeIn 0.4s ease forwards;
 }
 
-.bouncing-loader > div:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes bounce {
+@keyframes slideFadeIn {
   to {
-    transform: translateY(-100%);
+    opacity: 1;
+    transform: translateX(0);
   }
 }

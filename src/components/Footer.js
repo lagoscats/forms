@@ -4,7 +4,7 @@ import './Footer.css';
 
 const Footer = () => {
   const today = new Date();
-  
+
   return (
     <footer className="footer">
       <div className="footer-content">
@@ -32,11 +32,11 @@ const Footer = () => {
             <i className="fab fa-linkedin-in"></i>
           </Link>
         </div>
-      </div>
 
-      {/* Copyright Section */}
-      <div className="footer-copyright">
-        <p>&copy; {today.getFullYear()} Your Company. All Rights Reserved.</p>
+        {/* Copyright Section */}
+        <div className="footer-copyright">
+          <p>&copy; {today.getFullYear()} Your Company. All Rights Reserved.</p>
+        </div>
       </div>
     </footer>
   );
