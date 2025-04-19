@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { AnimatePresence } from 'framer-motion';
-import Profile from '../images/assets/mystic-landscape.jpg';
-import Footer from '../components/Footer';
-import './Home.css';
+import { motion, AnimatePresence } from 'framer-motion';
+import Profile from '../images/assets/waterfall.jpg';
 
+import Footer from '../components/Footer';
 import About from '../components/About';
 import Services from '../components/Services';
 import Contact from '../components/Contact';
+import './Home.css';
 
 const Home = () => {
   const adMessages = [
@@ -34,136 +33,111 @@ const Home = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentAd((prev) => (prev + 1) % adMessages.length);
-    }, 5000); // rotate every 5 seconds
+    }, 6000);
     return () => clearInterval(interval);
   }, [adMessages.length]);
 
   return (
     <motion.div
       className="home-container"
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
     >
       {/* Hero Section */}
-      <motion.section
-        className="hero-section"
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
-      >
-        <div className="inline-ad-snippet">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentAd}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.5 }}
-            >
-              <p className="ad-message">
-                {adMessages[currentAd].text}{' '}
-                <Link to={adMessages[currentAd].link} className="ad-link">
-                  {adMessages[currentAd].linkText}
-                </Link>
-              </p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+      <section className="hero-section">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentAd}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.5 }}
+            className="ad-snippet"
+          >
+            <p className="ad-message">
+              {adMessages[currentAd].text}{' '}
+              <Link to={adMessages[currentAd].link} className="ad-link">
+                {adMessages[currentAd].linkText}
+              </Link>
+            </p>
+          </motion.div>
+        </AnimatePresence>
 
-        <h1>Welcome to Our Website!</h1>
+        <motion.h1
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="hero-title"
+        >
+          Empower Your Vision. Grow with Confidence.
+        </motion.h1>
 
-        <div className="button-container">
+        <motion.p
+          className="hero-subtext"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
+          We equip modern creators and businesses with the tools to thrive. Join us today and experience the difference.
+        </motion.p>
+
+        <div className="hero-buttons">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link to="/signup">
-              <button className="signup-btn">Sign Up</button>
+            <Link to="/signup" className="btn btn-primary">
+              Sign Up Free
             </Link>
           </motion.div>
-
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link to="/login">
-              <button className="login-btn">Log In</button>
+            <Link to="/login" className="btn btn-outline">
+              Log In
             </Link>
           </motion.div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* Ads Banner Section */}
-      <motion.section
-        className="ads-banner"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="ads-content">
-          <h2>🚀 Special Offer: Launch Your Brand with 30% Off!</h2>
-          <p>Join thousands of entrepreneurs growing their online presence with our tools and support. Limited time only!</p>
-          <Link to="/services">
-            <button className="ads-btn">Explore Services</button>
-          </Link>
-        </div>
-      </motion.section>
-
-      {/* Side-by-Side CTA Section */}
-      <motion.section
-        className="side-by-side-section"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="side-text">
+      {/* Split CTA Section */}
+      <section className="cta-section">
+        <motion.div
+          className="cta-text"
+          initial={{ x: -50, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        >
           <h2>Ready to Build Your Brand?</h2>
-          <p>Our tools and team help you launch fast. Join today and grow with us.</p>
-          <Link to="/contact">
-            <button className="cta-btn">Contact Us</button>
+          <p>
+            Join thousands of creators and entrepreneurs who trust us to bring their ideas to life.
+          </p>
+          <Link to="/contact" className="btn btn-accent">
+            Get In Touch
           </Link>
-        </div>
+        </motion.div>
 
-        <div className="side-image">
-          <img src={Profile} alt="CTA Visual" />
-        </div>
-      </motion.section>
+        <motion.div
+          className="cta-image"
+          initial={{ x: 50, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        >
+          <img src={Profile} alt="Inspiration landscape" />
+        </motion.div>
+      </section>
 
-      {/* Other Sections */}
-      <motion.section
-        className="section about-section"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
+      {/* Content Sections */}
+      <section className="content-section">
         <About />
-      </motion.section>
+      </section>
 
-      <motion.section
-        className="section services-section"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
+      <section className="content-section">
         <Services />
-      </motion.section>
+      </section>
 
-      <motion.section
-        className="section contact-section"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-      >
+      <section className="content-section">
         <Contact />
-      </motion.section>
+      </section>
 
-      <motion.section
-        className="section footer-section"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-      >
-        <Footer />
-      </motion.section>
+      {/* Footer */}
+      <Footer />
     </motion.div>
   );
 };

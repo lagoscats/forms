@@ -1,146 +1,19 @@
-.contact-container {
+/* ===========================
+   General Layout
+=========================== */
+
+.contact-page-wrapper {
   padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
   background-color: #f9f9f9;
 }
 
 .contact-title {
   text-align: center;
   font-size: 2.5rem;
-  color: #333;
-  margin-bottom: 1.5rem;
-}
-
-.success-message, .error-message {
-  text-align: center;
-  font-size: 1rem;
-  color: green; /* Success green */
-}
-
-.error-message {
-  color: red; /* Error red */
-}
-
-.contact-layout {
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.contact-form {
-  flex: 1;
-  background-color: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.contact-form input,
-.contact-form textarea {
-  width: 100%;
-  padding: 0.8rem;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.contact-form button {
-  width: 100%;
-  padding: 1rem;
-  background-color: #4f46e5;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  cursor: pointer;
-}
-
-.contact-form button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.email-contact {
-  flex: 1;
-  background-color: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.email-contact h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.email-contact p {
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
-}
-
-.email-link {
-  color: #4f46e5;
-  font-weight: bold;
-  text-decoration: none;
-  font-size: 1.2rem;
-}
-
-.email-link:hover {
-  text-decoration: underline;
-}
-
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-  .contact-layout {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .contact-form, .email-contact {
-    flex: 1 1 100%;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .contact-title {
-    font-size: 2rem;
-  }
-
-  .contact-form input, .contact-form textarea {
-    font-size: 0.9rem;
-  }
-
-  .email-contact h2 {
-    font-size: 1.5rem;
-  }
-}
-
-.ad-banner {
-  margin-top: 2rem;
-  text-align: center;
-  font-size: 14px;
-  color: #888;
-}
-
-.ad-image {
-  max-width: 100%;
-  height: auto;
-  margin-top: 0.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.contact-page-wrapper {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: auto;
-}
-
-.contact-title {
-  text-align: center;
-  font-size: 2.5rem;
   margin-bottom: 2rem;
+  color: #333;
 }
 
 .contact-content {
@@ -150,38 +23,117 @@
   justify-content: space-between;
 }
 
-/* Contact Form */
+/* ===========================
+   Form Section
+=========================== */
+
 .contact-form {
   flex: 1;
   min-width: 300px;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.contact-form input,
-.contact-form textarea {
-  padding: 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
+.contact-form .form-group {
+  display: flex;
+  align-items: center;
+  background: #f1f1f1;
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
 }
 
+.contact-form .form-group.textarea-group {
+  align-items: flex-start;
+}
+
+.contact-form input,
+.contact-form textarea {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1rem;
+  margin-left: 0.8rem;
+}
+
+.contact-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Submit Button */
 .contact-form button {
-  padding: 0.8rem;
-  background-color: #2d6cdf;
+  padding: 0.9rem;
+  background-color: #0077cc;
   color: white;
   border: none;
   border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.contact-form button:hover {
+  background-color: #005fa3;
 }
 
 .contact-form button:disabled {
-  background-color: #a1c1f0;
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
-/* Ads */
-.contact-ads {
+/* ===========================
+   Feedback
+=========================== */
+
+.success-message,
+.error-message {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.success-message {
+  color: green;
+}
+
+.error-message {
+  color: red;
+}
+
+/* Spinner */
+.spinner {
+  margin-top: 1rem;
+  width: 30px;
+  height: 30px;
+  border: 4px solid #ccc;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===========================
+   Ads / Carousel Section
+=========================== */
+
+.contact-carousel {
   flex: 0.8;
   min-width: 300px;
   display: flex;
@@ -192,34 +144,7 @@
 
 .sponsored-label {
   font-size: 0.9rem;
-  color: #999;
-}
-
-.ad-image {
-  width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .contact-content {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .contact-ads {
-    width: 100%;
-  }
-}
-
-.contact-carousel {
-  flex: 0.8;
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+  color: #888;
 }
 
 .carousel-wrapper {
@@ -238,35 +163,67 @@
   border-radius: 10px;
 }
 
-.sponsored-label {
-  font-size: 0.9rem;
-  color: #888;
+.ad-text {
+  margin-top: 1rem;
+  text-align: center;
 }
 
-/* Keep existing responsive styles */
-@media (max-width: 768px) {
+.ad-button {
+  display: inline-block;
+  margin-top: 0.5rem;
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.ad-button:hover {
+  background-color: #372ee0;
+}
+
+/* ===========================
+   Icons
+=========================== */
+
+.form-icon {
+  font-size: 1.2rem;
+  color: #0077cc;
+  margin-top: 3px;
+}
+
+/* ===========================
+   Responsive Design
+=========================== */
+
+@media screen and (max-width: 768px) {
   .contact-content {
     flex-direction: column;
     align-items: center;
   }
 
+  .contact-form,
   .contact-carousel {
     width: 100%;
   }
+
+  .contact-title {
+    font-size: 2rem;
+  }
 }
 
-.spinner {
-  margin-top: 1rem;
-  width: 30px;
-  height: 30px;
-  border: 4px solid #ccc;
-  border-top: 4px solid #007bff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
+@media screen and (max-width: 480px) {
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 0.9rem;
+  }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+  .carousel-wrapper {
+    height: 200px;
+  }
+
+  .carousel-image {
+    object-fit: cover;
   }
 }

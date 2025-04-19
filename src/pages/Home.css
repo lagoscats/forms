@@ -1,175 +1,79 @@
-/* General Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Light & Dark Mode Variables */
-:root {
-  --primary-color: #28a745;
-  --secondary-color: #007bff;
-  --accent-color: #f8f9fa;
-  --button-text-color: #ffffff;
-  --hero-text-color: #ffffff;
-  --overlay-color: rgba(0, 0, 0, 0.3);
-  --background-color: #ffffff;
-  --text-color: #000000;
-}
-
-[data-theme="dark"] {
-  --primary-color: #1e7e34;
-  --secondary-color: #0056b3;
-  --accent-color: #343a40;
-  --button-text-color: #ffffff;
-  --hero-text-color: #ffffff;
-  --overlay-color: rgba(0, 0, 0, 0.7);
-  --background-color: #121212;
-  --text-color: #f1f1f1;
-}
-
-/* Home Container */
-.home-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-
-/* Hero Section */
 .hero-section {
-  background: linear-gradient(to bottom, #007bff, #28a745);
-  color: var(--hero-text-color);
-  padding: 100px 20px;
   text-align: center;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 4rem 2rem;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: white;
 }
 
-.hero-section h1 {
-  font-size: 3.5rem;
-  margin-bottom: 20px;
-  font-weight: bold;
+.ad-snippet {
+  margin-bottom: 1rem;
 }
 
-.button-container {
+.hero-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero-subtext {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.hero-buttons {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-top: 30px;
+  gap: 1rem;
 }
 
-.signup-btn, .login-btn {
-  padding: 15px 30px;
-  font-size: 16px;
+.btn {
+  padding: 0.75rem 1.5rem;
   border: none;
+  font-weight: bold;
   border-radius: 5px;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.3s ease;
+  text-decoration: none;
 }
 
-.signup-btn {
-  background-color: var(--primary-color);
-  color: var(--button-text-color);
+.btn-primary {
+  background-color: #00bcd4;
+  color: white;
 }
 
-.login-btn {
-  background-color: var(--secondary-color);
-  color: var(--button-text-color);
+.btn-outline {
+  background: transparent;
+  border: 2px solid #00bcd4;
+  color: #00bcd4;
 }
 
-.signup-btn:hover, .login-btn:hover {
-  background-color: #28a745;
-  transform: scale(1.05);
+.btn-accent {
+  background-color: #ff5722;
+  color: white;
+  margin-top: 1rem;
 }
 
-/* Ads Banner Section */
-.ads-banner {
-  background-color: var(--accent-color);
-  padding: 40px;
-  text-align: center;
-  margin: 20px 0;
-  border-radius: 8px;
-}
-
-.ads-content h2 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
-
-.ads-content p {
-  font-size: 1.1rem;
-  margin-bottom: 20px;
-}
-
-.ads-btn {
-  padding: 12px 30px;
-  font-size: 16px;
-  background-color: var(--primary-color);
-  color: var(--button-text-color);
-  border: none;
-  cursor: pointer;
-}
-
-.ads-btn:hover {
-  background-color: #1e7e34;
-}
-
-/* Side-by-Side CTA Section */
-.side-by-side-section {
+.cta-section {
   display: flex;
-  justify-content: space-between;
-  margin-top: 40px;
   flex-wrap: wrap;
-}
-
-.side-text {
-  flex: 1;
-  max-width: 50%;
-  padding: 20px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4rem 2rem;
   background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.side-text h2 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
-.side-text p {
-  font-size: 1rem;
-  margin-bottom: 20px;
-}
-
-.side-image {
+.cta-text {
   flex: 1;
-  max-width: 50%;
-  padding: 20px;
+  padding-right: 2rem;
 }
 
-.side-image img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
+.cta-image {
+  flex: 1;
 }
 
-/* Section Styling */
-.section {
-  width: 100%;
-  padding: 40px 20px;
+.cta-image img {
+  max-width: 100%;
+  border-radius: 10px;
 }
 
-/* Footer Styling */
-footer {
-  margin-top: 50px;
-  text-align: center;
-  padding: 20px;
+.content-section {
+  padding: 3rem 2rem;
 }

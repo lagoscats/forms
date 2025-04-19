@@ -5,6 +5,11 @@ import { FaSpinner } from 'react-icons/fa';
 import '../pages/Signup.css';
 
 const Signup = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  console.log("API_URL from .env:", API_URL);  // Check if this logs the correct value
+
+
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -14,50 +19,58 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validateEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setMessage('');
     setError('');
-  
+
+    const { username, email, password } = formData;
+
+    if (!username || !email || !password) {
+      setError('All fields are required.');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      // Update the backend URL to the local IP address
-      await axios.post(
-        'http://192.168.43.234:8000/api/users/signup/',  // Use your local IP address
-        formData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-  
-      setLoading(false);
-      setMessage('Signup successful! You can now login.');
-  
-      // Redirect to Login page after a short delay
+      await axios.post(`${API_URL}/signup/`, formData, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      setMessage('Signup successful! Redirecting to login...');
+      setFormData({ username: '', email: '', password: '' });
+
       setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
-      setLoading(false);
       if (err.response && err.response.data) {
         setError(err.response.data.error || 'Signup failed');
       } else {
         setError('Network error, please try again.');
       }
+    } finally {
+      setLoading(false);
     }
-  };  
+  };
 
   return (
     <div className="signup-container">
       <form onSubmit={handleSubmit} className="signup-form">
-        <h1>Sign Up</h1>
+        <h1>Create Account</h1>
 
         <label htmlFor="username">Username</label>
         <input
@@ -67,6 +80,7 @@ const Signup = () => {
           value={formData.username}
           onChange={handleChange}
           required
+          disabled={loading}
         />
 
         <label htmlFor="email">Email</label>
@@ -77,6 +91,7 @@ const Signup = () => {
           value={formData.email}
           onChange={handleChange}
           required
+          disabled={loading}
         />
 
         <label htmlFor="password">Password</label>
@@ -87,12 +102,18 @@ const Signup = () => {
           value={formData.password}
           onChange={handleChange}
           required
+          disabled={loading}
         />
 
-<button type="submit" disabled={loading} className="signup-button">
-  Sign Up
-  {loading && <FaSpinner className="spinner-icon slide-fade-in" />}
-</button>
+        <button type="submit" disabled={loading} className="signup-button">
+          {loading ? (
+            <>
+              Signing Up <FaSpinner className="spinner-icon spin" />
+            </>
+          ) : (
+            'Sign Up'
+          )}
+        </button>
 
         {message && <p className="success-message">{message}</p>}
         {error && <p className="error-message">{error}</p>}
@@ -100,9 +121,7 @@ const Signup = () => {
         <div className="links-container">
           <p>
             Already have an account?{' '}
-            <Link to="/login" className="login-link">
-              Login
-            </Link>
+            <Link to="/login" className="login-link">Login</Link>
           </p>
         </div>
       </form>

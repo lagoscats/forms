@@ -1,79 +1,76 @@
-// src/components/About.js
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import './About.css';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
-const teamMembers = [
-  {
-    id: 1,
-    name: 'John Doe',
-    role: 'CEO & Founder',
-    image: 'https://via.placeholder.com/150',
-    description: 'John is the visionary behind our company, guiding us with his strategic thinking and leadership.'
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    role: 'Lead Developer',
-    image: 'https://via.placeholder.com/150',
-    description: 'Jane leads our development team, ensuring the highest quality in every project we tackle.'
-  },
-  {
-    id: 3,
-    name: 'Sara Lee',
-    role: 'Marketing Manager',
-    image: 'https://via.placeholder.com/150',
-    description: 'Sara manages all of our marketing strategies, driving brand awareness and customer engagement.'
-  }
-];
 
 const About = () => {
   return (
-    <div className="about-container">
-      <motion.div 
-        className="about-content"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        <h2 className="about-title">About Us</h2>
-        <p className="about-description">
-          We are a passionate team dedicated to helping businesses grow through innovative solutions.
-          Our focus is on providing high-quality services that exceed client expectations.
+    <motion.section
+      className="about-container"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+    >
+      <div className="about-content">
+        <h2>About Us</h2>
+        <p className="about-intro">
+          We are passionate about building tools that empower individuals and businesses. Since our launch, we've helped hundreds of creators turn ideas into reality.
         </p>
-        {/* Wrap the button with Link */}
-        <Link to="/" className="about-link">
-          <motion.button 
-            className="about-button"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Learn More
-          </motion.button>
-        </Link>
-      </motion.div>
 
-      {/* Team Members Section */}
-      <motion.div 
-        className="team-container"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.5 }}
-      >
-        <h3 className="team-title">Meet Our Team</h3>
-        <div className="team-members">
-          {teamMembers.map(member => (
-            <div className="team-member" key={member.id}>
-              <img src={member.image} alt={member.name} className="team-member-img" />
-              <h4 className="team-member-name">{member.name}</h4>
-              <p className="team-member-role">{member.role}</p>
-              <p className="team-member-description">{member.description}</p>
-            </div>
-          ))}
+        <div className="about-block">
+          <h3>🎯 Our Mission</h3>
+          <p>
+            To simplify digital innovation by offering intuitive, reliable, and scalable solutions for creators and brands of all sizes.
+          </p>
         </div>
-      </motion.div>
-    </div>
+
+        <div className="about-block">
+          <h3>🌍 Our Vision</h3>
+          <p>
+            To be a global platform where ideas thrive, and innovation is accessible to everyone.
+          </p>
+        </div>
+
+        <div className="about-block team-section">
+          <h3>👥 Meet the Team</h3>
+          <div className="team-grid">
+            <div className="team-member">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Doe" />
+              <p>John Doe</p>
+              <span>Founder & CEO</span>
+            </div>
+            <div className="team-member">
+              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jane Smith" />
+              <p>Jane Smith</p>
+              <span>Head of Design</span>
+            </div>
+            <div className="team-member">
+              <img src="https://randomuser.me/api/portraits/men/76.jpg" alt="Mike Johnson" />
+              <p>Mike Johnson</p>
+              <span>Lead Engineer</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="about-block values">
+          <h3>💎 Our Core Values</h3>
+          <ul>
+            <li>Innovation through simplicity</li>
+            <li>User-first design</li>
+            <li>Transparency & integrity</li>
+            <li>Community-driven growth</li>
+          </ul>
+        </div>
+
+        <div className="about-cta">
+          <h4>Ready to join our journey?</h4>
+          <Link to="/contact" className="about-btn">Let’s Connect</Link>
+        </div>
+
+      </div>
+    </motion.section>
   );
 };
 

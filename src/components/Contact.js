@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { FiUser, FiMail, FiMessageSquare, FiSend } from "react-icons/fi"; // <-- Icons
 import "./Contact.css";
 
 const ads = [
@@ -41,7 +42,6 @@ const Contact = () => {
 
   const navigate = useNavigate();
 
-  // Auto switch ad every 4 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentAdIndex((prev) => (prev + 1) % ads.length);
@@ -75,13 +75,10 @@ const Contact = () => {
     }
 
     try {
-      // Update the backend URL to use your local IP address
-      const response = await axios.post("http://192.168.43.234:8000/api/contact/", formData);  // Updated IP
-
+      const response = await axios.post("http://127.0.0.1:8000/api/contact/", formData);
       setSuccessMessage(response.data.message);
       setFormData({ name: "", email: "", message: "" });
       setIsRedirecting(true);
-
       setTimeout(() => {
         navigate("/");
       }, 2000);
@@ -116,31 +113,43 @@ const Contact = () => {
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           {isRedirecting && <div className="spinner"></div>}
 
-          <input
-            type="text"
-            name="name"
-            placeholder="Your Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Your Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <textarea
-            name="message"
-            placeholder="Your Message"
-            value={formData.message}
-            onChange={handleChange}
-            required
-          />
+          <div className="form-group">
+            <FiUser className="form-icon" />
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <FiMail className="form-icon" />
+            <input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group textarea-group">
+            <FiMessageSquare className="form-icon" />
+            <textarea
+              name="message"
+              placeholder="Your Message"
+              value={formData.message}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Sending..." : "Send Message"}
+            <FiSend className="btn-icon" /> {isSubmitting ? "Sending..." : "Send Message"}
           </button>
         </motion.form>
 
