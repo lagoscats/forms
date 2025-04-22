@@ -6,55 +6,200 @@
   height: 100vh;
   background-color: #f4f4f4;
   padding: 1rem;
+  transition: background-color 0.5s ease;
 }
 
 .login-form {
   background-color: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: formAnimation 0.6s ease-out forwards;
+  transition: box-shadow 0.3s ease;
+}
+
+@keyframes formAnimation {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 h1 {
   text-align: center;
   margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 2rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+h1:hover {
+  color: #3498db;
 }
 
 label {
   font-size: 1rem;
   margin-bottom: 0.5rem;
   display: block;
+  color: #555;
+  font-weight: 500;
 }
 
-input[type="text"], 
+/* Input Fields */
+input[type="text"],
 input[type="password"] {
   width: 100%;
-  padding: 0.8rem;
-  margin-bottom: 1.2rem;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.5rem;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Focus Effect */
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
+  outline: none;
+}
+
+/* Button Styles */
 button {
   width: 100%;
   padding: 1rem;
   background-color: #4caf50;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 1.2rem;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 button:hover {
   background-color: #45a049;
+  transform: scale(1.05);
 }
 
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Error Message Styling */
 .error-message {
   color: red;
   font-size: 16px;
   margin-top: 10px;
+  text-align: center;
+  opacity: 0;
+  animation: errorMessageAnimation 0.5s ease-out forwards;
+}
+
+@keyframes errorMessageAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Password Field (show/hide toggle) */
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 3rem;
+  transition: padding-right 0.3s ease;
+}
+
+/* Password Toggle Button */
+.password-toggle {
+  position: absolute;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #3498db;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+  color: #2d88b2;
+}
+
+/* Smooth Hover Effects on Inputs */
+input[type="text"]:hover,
+input[type="password"]:hover {
+  border-color: #3498db;
+  background-color: #f7faff;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  background-color: #fff;
+  border-color: #3498db;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+}
+
+input[type="text"]:disabled,
+input[type="password"]:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .login-form {
+    padding: 1.5rem 1.5rem;
+    max-width: 100%;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  button {
+    font-size: 1.1rem;
+  }
+
+  .password-field input {
+    padding-right: 2.5rem;
+  }
+}
+
+/* Links Styling for Login and Signup */
+.auth-link {
+  color: #3498db;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.auth-link:hover {
+  color: #2980b9;
+  transform: scale(1.05);
+}
+
+.auth-link:focus {
+  outline: none;
 }

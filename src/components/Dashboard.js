@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import { Menu, X } from 'lucide-react';
 
 const Dashboard = () => {
-  const username = localStorage.getItem('username');
+  const [username, setUsername] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    } else {
+      // Optionally redirect to login if no username
+      navigate('/login');
+    }
+  }, [navigate]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -34,7 +44,7 @@ const Dashboard = () => {
             alt="Profile"
             className="avatar"
           />
-          <h3>{username}</h3>
+          <h3>{username || 'Guest'}</h3>
         </div>
         <nav className="sidebar-nav">
           <Link to="/dashboard" onClick={toggleSidebar}>Dashboard</Link>
@@ -53,7 +63,7 @@ const Dashboard = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          Welcome, {username}!
+          Welcome, {username || 'there'}!
         </motion.h1>
 
         <div className="dashboard-grid">

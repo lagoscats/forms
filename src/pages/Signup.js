@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { FaSpinner } from 'react-icons/fa';
+import { FaSpinner, FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../pages/Signup.css';
 
 const Signup = () => {
+  const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
-  console.log("API_URL from .env:", API_URL);  // Check if this logs the correct value
-
-
 
   const [formData, setFormData] = useState({
     username: '',
@@ -16,51 +14,45 @@ const Signup = () => {
     password: '',
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const validateEmail = (email) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('');
     setError('');
-
-    const { username, email, password } = formData;
-
-    if (!username || !email || !password) {
-      setError('All fields are required.');
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      setError('Please enter a valid email address.');
-      return;
-    }
-
+    setMessage('');
     setLoading(true);
-
+  
+    if (!formData.username || !formData.email || !formData.password) {
+      setError('Please fill out all fields.');
+      setLoading(false);
+      return;
+    }
+  
     try {
-      await axios.post(`${API_URL}/signup/`, formData, {
+      const response = await axios.post(`${API_URL}/signup/`, formData, {
         headers: { 'Content-Type': 'application/json' },
       });
-
-      setMessage('Signup successful! Redirecting to login...');
-      setFormData({ username: '', email: '', password: '' });
-
-      setTimeout(() => navigate('/login'), 2000);
+  
+      const user = response.data;
+      setMessage(`Welcome, ${user.username}! Redirecting...`);
+  
+      setTimeout(() => navigate('/login'), 1500);
     } catch (err) {
-      if (err.response && err.response.data) {
-        setError(err.response.data.error || 'Signup failed');
+      if (err.response?.data?.error) {
+        setError(err.response.data.error);
       } else {
-        setError('Network error, please try again.');
+        setError('Something went wrong. Please try again.');
       }
     } finally {
       setLoading(false);
@@ -70,8 +62,8 @@ const Signup = () => {
   return (
     <div className="signup-container">
       <form onSubmit={handleSubmit} className="signup-form">
-        <h1>Create Account</h1>
-
+        <h1>Sign Up</h1>
+        {/* Form inputs */}
         <label htmlFor="username">Username</label>
         <input
           type="text"
@@ -95,20 +87,30 @@ const Signup = () => {
         />
 
         <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-          disabled={loading}
-        />
+        <div className="password-field">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            disabled={loading}
+          />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="password-toggle"
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
 
         <button type="submit" disabled={loading} className="signup-button">
           {loading ? (
             <>
-              Signing Up <FaSpinner className="spinner-icon spin" />
+              Creating Account <FaSpinner className="spinner-icon spin" />
             </>
           ) : (
             'Sign Up'
@@ -121,7 +123,9 @@ const Signup = () => {
         <div className="links-container">
           <p>
             Already have an account?{' '}
-            <Link to="/login" className="login-link">Login</Link>
+            <Link to="/login" className="auth-link">
+              Log In
+            </Link>
           </p>
         </div>
       </form>

@@ -1,33 +1,156 @@
-/* Settings.css */
+/* General settings container */
+.settings-container {
+  max-width: 700px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.settings-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #333;
+}
+
+.settings-section {
+  margin-bottom: 2rem;
+}
+
+.settings-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #444;
+}
+
+.settings-option {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.settings-option input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.settings-option select {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s;
+}
+
+.settings-option select:focus {
+  border-color: #007bff;
+}
+
+.tooltip {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.3rem;
+}
+
+/* Save button styling */
+.save-btn {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  padding: 0.9rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  display: block;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.save-btn:hover {
+  background: linear-gradient(135deg, #0056b3, #004494);
+  transform: translateY(-1px);
+}
+
+/* Dark Mode styling */
+body.dark-mode {
+  background-color: #181818;
+  color: #fff;
+}
+
+body.dark-mode .settings-container {
+  background: #333;
+  color: #fff;
+}
+
+body.dark-mode .settings-option select {
+  background: #555;
+  color: #fff;
+  border: 1px solid #444;
+}
+
+body.dark-mode .save-btn {
+  background: linear-gradient(135deg, #444, #222);
+}
+
+body.dark-mode .save-btn:hover {
+  background: linear-gradient(135deg, #333, #111);
+}
+
+/* Theme color styling */
+body.blue-theme {
+  --primary-color: #007bff;
+}
+
+body.green-theme {
+  --primary-color: #28a745;
+}
+
+body.red-theme {
+  --primary-color: #dc3545;
+}
+
+body.purple-theme {
+  --primary-color: #6f42c1;
+}
 
 .settings-container {
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 3rem auto;
+  border-color: var(--primary-color);
+}
+
+.save-btn {
+  background: var(--primary-color);
+}
+
+.save-btn:hover {
+  background: darken(var(--primary-color), 10%);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .settings-container {
+    padding: 1.5rem;
   }
-  
-  .settings-container form {
-    display: flex;
-    flex-direction: column;
+
+  .settings-option select,
+  .settings-option input[type="checkbox"] {
+    font-size: 0.9rem;
   }
-  
-  .settings-container label {
-    margin-top: 10px;
+
+  .settings-section h2 {
+    font-size: 1.25rem;
   }
-  
-  .settings-container button {
-    padding: 10px 15px;
-    background-color: #0077ff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+
+  .save-btn {
+    font-size: 1rem;
   }
-  
-  .settings-container button:hover {
-    background-color: #005bb5;
-  }
-  
+}

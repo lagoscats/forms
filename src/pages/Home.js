@@ -4,9 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Profile from '../images/assets/waterfall.jpg';
 
 import Footer from '../components/Footer';
-import About from '../components/About';
-import Services from '../components/Services';
-import Contact from '../components/Contact';
 import './Home.css';
 
 const Home = () => {
@@ -121,19 +118,6 @@ const Home = () => {
         >
           <img src={Profile} alt="Inspiration landscape" />
         </motion.div>
-      </section>
-
-      {/* Content Sections */}
-      <section className="content-section">
-        <About />
-      </section>
-
-      <section className="content-section">
-        <Services />
-      </section>
-
-      <section className="content-section">
-        <Contact />
       </section>
 
       {/* Footer */}

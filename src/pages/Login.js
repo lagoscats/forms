@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { FaSpinner } from 'react-icons/fa';
-import '../pages/Login.css'; // Adjust this path if needed
+import { FaSpinner, FaEye, FaEyeSlash } from 'react-icons/fa';
+import '../pages/Login.css'; // Make sure this path is correct
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +13,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_API_URL;
@@ -21,23 +22,35 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setMessage('');
     setLoading(true);
 
+    if (!formData.username.trim() || !formData.password.trim()) {
+      setError('Please fill in all fields.');
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.post(`${API_URL}/login/`, formData, {
         headers: { 'Content-Type': 'application/json' },
       });
 
-      // Assuming Django sends back a JWT token or session info
       const data = response.data;
 
+      // Save token and username
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.username || formData.username); // fallback to input if API doesn't return username
+
       setMessage('Login successful!');
-      localStorage.setItem('token', data.token); // Optional: store JWT token
-      setTimeout(() => navigate('/dashboard'), 1000); // redirect to protected page
+      setTimeout(() => navigate('/dashboard'), 1000);
     } catch (err) {
       if (err.response && err.response.data) {
         setError(err.response.data.error || 'Invalid credentials');
@@ -62,19 +75,30 @@ const Login = () => {
           value={formData.username}
           onChange={handleChange}
           required
+          autoFocus
           disabled={loading}
         />
 
         <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-          disabled={loading}
-        />
+        <div className="password-field">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            disabled={loading}
+          />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="password-toggle"
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
 
         <button type="submit" disabled={loading} className="login-button">
           {loading ? (

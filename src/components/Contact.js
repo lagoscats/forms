@@ -42,6 +42,9 @@ const Contact = () => {
 
   const navigate = useNavigate();
 
+  // Use the local IP address for the backend API URL
+  const API_URL = "http://192.168.43.234:8000/api/contact/";
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentAdIndex((prev) => (prev + 1) % ads.length);
@@ -75,7 +78,8 @@ const Contact = () => {
     }
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/contact/", formData);
+      // Sending POST request to the local IP address
+      const response = await axios.post(API_URL, formData);
       setSuccessMessage(response.data.message);
       setFormData({ name: "", email: "", message: "" });
       setIsRedirecting(true);
