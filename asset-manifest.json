@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/forms/static/css/main.91178dbb.css",
-    "main.js": "/forms/static/js/main.ca838bca.js",
+    "main.css": "/forms/static/css/main.e52ad056.css",
+    "main.js": "/forms/static/js/main.821d523b.js",
     "static/media/waterfall.jpg": "/forms/static/media/waterfall.4460f5d5c1922ea2ad73.jpg",
     "static/media/profile.jpg": "/forms/static/media/profile.f4a56e472040a9091232.jpg",
     "index.html": "/forms/index.html",
-    "main.91178dbb.css.map": "/forms/static/css/main.91178dbb.css.map",
-    "main.ca838bca.js.map": "/forms/static/js/main.ca838bca.js.map"
+    "main.e52ad056.css.map": "/forms/static/css/main.e52ad056.css.map",
+    "main.821d523b.js.map": "/forms/static/js/main.821d523b.js.map"
   },
   "entrypoints": [
-    "static/css/main.91178dbb.css",
-    "static/js/main.ca838bca.js"
+    "static/css/main.e52ad056.css",
+    "static/js/main.821d523b.js"
   ]
 }
