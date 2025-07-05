@@ -1,76 +1,118 @@
-import React from 'react';
-import './About.css';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { FaUser, FaEnvelope, FaPaperPlane } from "react-icons/fa";
+import "./About.css";
 
 const About = () => {
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState({
+    submitting: false,
+    success: "",
+    error: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus({ submitting: true, success: "", error: "" });
+
+    try {
+      const res = await axios.post(`${API_URL}/contact/`, formData, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (res.status === 201) {
+        setStatus({
+          submitting: false,
+          success: "✅ Message sent successfully!",
+          error: ""
+        });
+        setFormData({ name: "", email: "", message: "" });
+      }
+    } catch (err) {
+      let errorMsg = "❌ Failed to send message. Please try again.";
+      if (err.response?.data) {
+        const data = err.response.data;
+        if (data.name) errorMsg = `Name: ${data.name[0]}`;
+        else if (data.email) errorMsg = `Email: ${data.email[0]}`;
+        else if (data.message) errorMsg = `Message: ${data.message[0]}`;
+      }
+
+      setStatus({ submitting: false, success: "", error: errorMsg });
+    }
+  };
+
+  // Auto-hide status messages
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setStatus(prev => ({ ...prev, success: "", error: "" }));
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [status.success, status.error]);
+
   return (
-    <motion.section
-      className="about-container"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
-    >
-      <div className="about-content">
-        <h2>About Us</h2>
-        <p className="about-intro">
-          We are passionate about building tools that empower individuals and businesses. Since our launch, we've helped hundreds of creators turn ideas into reality.
-        </p>
-
-        <div className="about-block">
-          <h3>🎯 Our Mission</h3>
-          <p>
-            To simplify digital innovation by offering intuitive, reliable, and scalable solutions for creators and brands of all sizes.
-          </p>
+    <div className="about-background">
+      <div className="about-container">
+        <div className="about-text">
+          <h1>About Us</h1>
+          <p>We are a leading company dedicated to providing the best services for our clients.</p>
+          <a href="/register" className="cta-button">Join Us</a>
         </div>
 
-        <div className="about-block">
-          <h3>🌍 Our Vision</h3>
-          <p>
-            To be a global platform where ideas thrive, and innovation is accessible to everyone.
-          </p>
-        </div>
-
-        <div className="about-block team-section">
-          <h3>👥 Meet the Team</h3>
-          <div className="team-grid">
-            <div className="team-member">
-              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Doe" />
-              <p>John Doe</p>
-              <span>Founder & CEO</span>
+        <div className="about-form">
+          <h2>Contact Us</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="input-icon">
+              <FaUser />
+              <input
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Your Name"
+                required
+                disabled={status.submitting}
+              />
             </div>
-            <div className="team-member">
-              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jane Smith" />
-              <p>Jane Smith</p>
-              <span>Head of Design</span>
+            <div className="input-icon">
+              <FaEnvelope />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Your Email"
+                required
+                disabled={status.submitting}
+              />
             </div>
-            <div className="team-member">
-              <img src="https://randomuser.me/api/portraits/men/76.jpg" alt="Mike Johnson" />
-              <p>Mike Johnson</p>
-              <span>Lead Engineer</span>
-            </div>
-          </div>
-        </div>
+            <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder="Your Message"
+              required
+              rows="4"
+              disabled={status.submitting}
+            ></textarea>
 
-        <div className="about-block values">
-          <h3>💎 Our Core Values</h3>
-          <ul>
-            <li>Innovation through simplicity</li>
-            <li>User-first design</li>
-            <li>Transparency & integrity</li>
-            <li>Community-driven growth</li>
-          </ul>
-        </div>
+            <button type="submit" disabled={status.submitting}>
+              <FaPaperPlane />
+              {status.submitting ? "Sending..." : "Send Message"}
+            </button>
 
-        <div className="about-cta">
-          <h4>Ready to join our journey?</h4>
-          <Link to="/contact" className="about-btn">Let’s Connect</Link>
+            {status.success && <p className="success-text">{status.success}</p>}
+            {status.error && <p className="error-text">{status.error}</p>}
+          </form>
         </div>
-
       </div>
-    </motion.section>
+    </div>
   );
 };
 

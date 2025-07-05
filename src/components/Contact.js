@@ -1,198 +1,112 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { FiUser, FiMail, FiMessageSquare, FiSend } from "react-icons/fi"; // <-- Icons
-import "./Contact.css";
-
-const ads = [
-  {
-    id: 1,
-    img: "./images/assets/003.jpg",
-    alt: "Ad Banner 1",
-    title: "Get 50% Off!",
-    description: "On all web development services this month only.",
-    link: "https://yourservice.com/offer",
-  },
-  {
-    id: 2,
-    img: "https://via.placeholder.com/300x250.png?text=Ad+Banner+2",
-    alt: "Ad Banner 2",
-    title: "Free Resources",
-    description: "Download free React templates and tools.",
-    link: "https://yourresource.com/freebies",
-  },
-  {
-    id: 3,
-    img: "https://via.placeholder.com/300x250.png?text=Ad+Banner+3",
-    alt: "Ad Banner 3",
-    title: "Join Our Webinar",
-    description: "Learn how to scale your startup with Django + React.",
-    link: "https://yourwebinar.com/signup",
-  },
-];
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { motion } from 'framer-motion';
+import './Contact.css';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [currentAdIndex, setCurrentAdIndex] = useState(0);
-  const [isRedirecting, setIsRedirecting] = useState(false);
+  const API_URL = process.env.REACT_APP_API_URL;
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-
-  // Use the local IP address for the backend API URL
-  const API_URL = "http://192.168.43.234:8000/api/contact/";
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentAdIndex((prev) => (prev + 1) % ads.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleChange = (e) => {
+  const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const validateForm = () => {
-    const { name, email, message } = formData;
-    if (!name || !email || !message) return "All fields are required.";
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return "Please enter a valid email address.";
-    return null;
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setErrorMessage("");
-    setSuccessMessage("");
-
-    const validationError = validateForm();
-    if (validationError) {
-      setErrorMessage(validationError);
-      setIsSubmitting(false);
-      return;
-    }
+    setSuccess('');
+    setError('');
+    setLoading(true);
 
     try {
-      // Sending POST request to the local IP address
-      const response = await axios.post(API_URL, formData);
-      setSuccessMessage(response.data.message);
-      setFormData({ name: "", email: "", message: "" });
-      setIsRedirecting(true);
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
-    } catch (error) {
-      setErrorMessage("Failed to send message. Please try again.");
+      await axios.post(`${API_URL}/contact/`, formData);  // ✅ correct
+      console.log('Submitting:', formData);
+      setSuccess('Message sent successfully!');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (err) {
+      setError('Something went wrong. Please try again later.');
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   };
 
+  // Auto-hide messages after 3s
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSuccess('');
+      setError('');
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [success, error]);
+
   return (
-    <div className="contact-page-wrapper">
-      <motion.h1
-        className="contact-title"
-        initial={{ opacity: 0, x: -100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1 }}
+    <motion.div
+      className="contact-container"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <motion.div
+        className="contact-text"
+        initial={{ x: -50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
       >
-        Contact Us
-      </motion.h1>
+        <h1>Get in Touch</h1>
+        <p>
+          We’d love to hear from you! Fill out the form and we’ll get back to you as soon as possible.
+        </p>
+        <a href="/about" className="cta-button">Learn More About Us</a>
+      </motion.div>
 
-      <div className="contact-content">
-        {/* Left: Form */}
-        <motion.form
-          className="contact-form"
-          onSubmit={handleSubmit}
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-        >
-          {successMessage && <p className="success-message">{successMessage}</p>}
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
-          {isRedirecting && <div className="spinner"></div>}
+      <motion.div
+        className="contact-form"
+        initial={{ x: 50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
+        <h2>Send a Message</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            disabled={loading}
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            disabled={loading}
+          />
+          <textarea
+            name="message"
+            rows="5"
+            placeholder="Your Message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+            disabled={loading}
+          ></textarea>
 
-          <div className="form-group">
-            <FiUser className="form-icon" />
-            <input
-              type="text"
-              name="name"
-              placeholder="Your Name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <FiMail className="form-icon" />
-            <input
-              type="email"
-              name="email"
-              placeholder="Your Email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group textarea-group">
-            <FiMessageSquare className="form-icon" />
-            <textarea
-              name="message"
-              placeholder="Your Message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <button type="submit" disabled={isSubmitting}>
-            <FiSend className="btn-icon" /> {isSubmitting ? "Sending..." : "Send Message"}
+          <button type="submit" disabled={loading}>
+            {loading ? <span className="spinner"></span> : 'Send Message'}
           </button>
-        </motion.form>
 
-        {/* Right: Ad Carousel */}
-        <div className="contact-carousel">
-          <p className="sponsored-label">— Sponsored —</p>
-          <div className="carousel-wrapper">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={ads[currentAdIndex].id}
-                className="carousel-ad"
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.6 }}
-              >
-                <img
-                  src={ads[currentAdIndex].img}
-                  alt={ads[currentAdIndex].alt}
-                  className="carousel-image"
-                />
-                <div className="ad-text">
-                  <h3>{ads[currentAdIndex].title}</h3>
-                  <p>{ads[currentAdIndex].description}</p>
-                  <a
-                    href={ads[currentAdIndex].link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ad-button"
-                  >
-                    Learn More
-                  </a>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-      </div>
-    </div>
+          {success && <p className="success-text">{success}</p>}
+          {error && <p className="error-text">{error}</p>}
+        </form>
+      </motion.div>
+    </motion.div>
   );
 };
 

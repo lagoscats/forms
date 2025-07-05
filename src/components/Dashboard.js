@@ -22,7 +22,7 @@ const Dashboard = () => {
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
-
+  
   const handleLogout = () => {
     localStorage.removeItem('username');
     localStorage.removeItem('token'); // If you're storing a token

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaSpinner, FaEye, FaEyeSlash } from 'react-icons/fa';
-import '../pages/Signup.css';
+import './Signup.css';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -18,39 +18,53 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [typedText, setTypedText] = useState('');
+  const fullText = 'Create your account';
+
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setTypedText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) clearInterval(interval);
+    }, 80);
+    return () => clearInterval(interval);
+  }, []);
 
   const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
+    setShowPassword(prev => !prev);
   };
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setError('');
     setMessage('');
     setLoading(true);
-  
+
     if (!formData.username || !formData.email || !formData.password) {
       setError('Please fill out all fields.');
       setLoading(false);
       return;
     }
-  
+
     try {
       const response = await axios.post(`${API_URL}/signup/`, formData, {
         headers: { 'Content-Type': 'application/json' },
       });
-  
+
       const user = response.data;
       setMessage(`Welcome, ${user.username}! Redirecting...`);
-  
       setTimeout(() => navigate('/login'), 1500);
     } catch (err) {
-      if (err.response?.data?.error) {
-        setError(err.response.data.error);
+      console.log(err.response?.data);
+      if (err.response?.data?.username) {
+        setError(`Username: ${err.response.data.username[0]}`);
+      } else if (err.response?.data?.email) {
+        setError(`Email: ${err.response.data.email[0]}`);
       } else {
         setError('Something went wrong. Please try again.');
       }
@@ -60,74 +74,75 @@ const Signup = () => {
   };
 
   return (
-    <div className="signup-container">
+    <div className="signup-wrapper">
       <form onSubmit={handleSubmit} className="signup-form">
-        <h1>Sign Up</h1>
-        {/* Form inputs */}
-        <label htmlFor="username">Username</label>
+        <img
+          src="/images/logo.png" // Replace with your actual logo path
+          alt="App Logo"
+          className="logo"
+        />
+        <h2 className="typewriter">{typedText}</h2>
+
+        <label title="Pick a unique username">Username</label>
         <input
           type="text"
-          id="username"
           name="username"
           value={formData.username}
           onChange={handleChange}
           required
           disabled={loading}
+          placeholder="Enter username"
         />
 
-        <label htmlFor="email">Email</label>
+        <label title="Use a valid email address">Email</label>
         <input
           type="email"
-          id="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
           required
           disabled={loading}
+          placeholder="you@example.com"
         />
 
-        <label htmlFor="password">Password</label>
-        <div className="password-field">
+        <label title="Password must be at least 8 characters">Password</label>
+        <div className="password-wrapper">
           <input
             type={showPassword ? 'text' : 'password'}
-            id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
             disabled={loading}
+            placeholder="••••••••"
           />
           <button
             type="button"
             onClick={togglePasswordVisibility}
-            className="password-toggle"
-            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            className="toggle-btn"
+            aria-label="Toggle password visibility"
+            title={showPassword ? 'Hide password' : 'Show password'}
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
         </div>
 
-        <button type="submit" disabled={loading} className="signup-button">
+        <button type="submit" disabled={loading}>
           {loading ? (
             <>
-              Creating Account <FaSpinner className="spinner-icon spin" />
+              Signing Up <FaSpinner className="spin" />
             </>
           ) : (
             'Sign Up'
           )}
         </button>
 
-        {message && <p className="success-message">{message}</p>}
-        {error && <p className="error-message">{error}</p>}
+        {message && <p className="success">{message}</p>}
+        {error && <p className="error">{error}</p>}
 
-        <div className="links-container">
-          <p>
-            Already have an account?{' '}
-            <Link to="/login" className="auth-link">
-              Log In
-            </Link>
-          </p>
-        </div>
+        <p className="link-note">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
       </form>
     </div>
   );

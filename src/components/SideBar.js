@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './SideBar.css'; // Make sure this file exists with the proper styles
+import './SideBar.css';
 
 const Sidebar = ({ onLogout }) => {
   return (
     <div className="sidebar">
       <div className="sidebar-links">
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/profile">Profile</Link>
-        <Link to="/settings">Settings</Link>
+        <Link to="/dashboard" className="sidebar-link">Dashboard</Link>
+        <Link to="/profile" className="sidebar-link">Profile</Link>
+        <Link to="/settings" className="sidebar-link">Settings</Link>
       </div>
       
       {/* Logout button at the bottom of the sidebar */}

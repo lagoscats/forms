@@ -1,126 +1,135 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaSpinner, FaEye, FaEyeSlash } from 'react-icons/fa';
-import '../pages/Login.css'; // Make sure this path is correct
+import './Login.css'; // Make sure this file exists in the same folder
 
 const Login = () => {
+  const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [typedText, setTypedText] = useState('');
+  const fullText = 'Login to your account';
 
-  const navigate = useNavigate();
-  const API_URL = process.env.REACT_APP_API_URL;
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setTypedText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) clearInterval(interval);
+    }, 90);
+    return () => clearInterval(interval);
+  }, []);
 
-  const handleChange = (e) => {
+  const togglePasswordVisibility = () => {
+    setShowPassword(prev => !prev);
+  };
+
+  const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setError('');
-    setMessage('');
     setLoading(true);
 
-    if (!formData.username.trim() || !formData.password.trim()) {
-      setError('Please fill in all fields.');
-      setLoading(false);
-      return;
-    }
+    const { username, password } = formData;
 
     try {
-      const response = await axios.post(`${API_URL}/login/`, formData, {
-        headers: { 'Content-Type': 'application/json' },
+      const res = await axios.post(`${API_URL}/login/`, {
+        username,
+        password,
       });
 
-      const data = response.data;
+      const { access, refresh } = res.data;
 
-      // Save token and username
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('username', data.username || formData.username); // fallback to input if API doesn't return username
+      localStorage.setItem('token', access);
+      localStorage.setItem('refresh', refresh);
+      localStorage.setItem('username', username);
 
-      setMessage('Login successful!');
-      setTimeout(() => navigate('/dashboard'), 1000);
+      setMessage('Login successful! Redirecting...');
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1500);
     } catch (err) {
-      if (err.response && err.response.data) {
-        setError(err.response.data.error || 'Invalid credentials');
-      } else {
-        setError('Network error. Please try again.');
-      }
+      setError('Invalid credentials');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-container">
+    <div className="login-wrapper">
       <form onSubmit={handleSubmit} className="login-form">
-        <h1>Login</h1>
+        <div className="logo-area">
+          <img
+            src="/logo192.png"
+            alt="Logo"
+            className="logo"
+            title="Welcome to our app"
+          />
+        </div>
 
-        <label htmlFor="username">Username</label>
+        <h2 className="typewriter">{typedText}</h2>
+
+        <label>Username</label>
         <input
           type="text"
-          id="username"
           name="username"
           value={formData.username}
           onChange={handleChange}
           required
-          autoFocus
           disabled={loading}
+          title="Enter your username"
         />
 
-        <label htmlFor="password">Password</label>
-        <div className="password-field">
+        <label>Password</label>
+        <div className="password-wrapper">
           <input
             type={showPassword ? 'text' : 'password'}
-            id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
             disabled={loading}
+            title="Enter your password"
           />
           <button
             type="button"
             onClick={togglePasswordVisibility}
-            className="password-toggle"
-            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            className="toggle-btn"
+            title={showPassword ? 'Hide password' : 'Show password'}
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
         </div>
 
-        <button type="submit" disabled={loading} className="login-button">
+        <button type="submit" disabled={loading}>
           {loading ? (
             <>
-              Logging In <FaSpinner className="spinner-icon spin" />
+              Logging in <FaSpinner className="spin" />
             </>
           ) : (
             'Login'
           )}
         </button>
 
-        {message && <p className="success-message">{message}</p>}
-        {error && <p className="error-message">{error}</p>}
+        {message && <p className="success">{message}</p>}
+        {error && <p className="error">{error}</p>}
 
-        <div className="links-container">
-          <p>
-            Don’t have an account?{' '}
-            <Link to="/signup" className="signup-link">
-              Sign Up
-            </Link>
-          </p>
-        </div>
+        <p className="link-note">
+          Don’t have an account? <Link to="/signup">Signup</Link>
+        </p>
       </form>
     </div>
   );
