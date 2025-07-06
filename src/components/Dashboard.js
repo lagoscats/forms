@@ -12,7 +12,7 @@ const Dashboard = () => {
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
-      setUsername(storedUsername);
+      setUsername(storedUsername.charAt(0).toUpperCase() + storedUsername.slice(1));
     } else {
       // Optionally redirect to login if no username
       navigate('/login');
