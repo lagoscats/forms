@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/forms/static/css/main.e52ad056.css",
-    "main.js": "/forms/static/js/main.821d523b.js",
-    "static/media/waterfall.jpg": "/forms/static/media/waterfall.4460f5d5c1922ea2ad73.jpg",
-    "static/media/profile.jpg": "/forms/static/media/profile.f4a56e472040a9091232.jpg",
-    "index.html": "/forms/index.html",
-    "main.e52ad056.css.map": "/forms/static/css/main.e52ad056.css.map",
-    "main.821d523b.js.map": "/forms/static/js/main.821d523b.js.map"
+    "main.css": "./static/css/main.8239128e.css",
+    "main.js": "./static/js/main.2b4fa69e.js",
+    "static/media/waterfall.jpg": "./static/media/waterfall.4460f5d5c1922ea2ad73.jpg",
+    "static/media/profile.jpg": "./static/media/profile.f4a56e472040a9091232.jpg",
+    "index.html": "./index.html",
+    "main.8239128e.css.map": "./static/css/main.8239128e.css.map",
+    "main.2b4fa69e.js.map": "./static/js/main.2b4fa69e.js.map"
   },
   "entrypoints": [
-    "static/css/main.e52ad056.css",
-    "static/js/main.821d523b.js"
+    "static/css/main.8239128e.css",
+    "static/js/main.2b4fa69e.js"
   ]
 }
