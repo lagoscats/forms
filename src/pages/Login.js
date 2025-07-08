@@ -43,21 +43,22 @@ const Login = () => {
     setError('');
     setLoading(true);
 
-    const { username, password } = formData;
-
+    
     try {
-      const res = await axios.post(`${API_URL}/login/`, {
-        username,
-        password,
-      });
+      const response = await axios.post(`${API_URL}/signup/`, formData, {
+  headers: { 'Content-Type': 'application/json' },
+});
 
-      const { access, refresh } = res.data;
+
+      const { username, access, refresh } = response.data;
 
       localStorage.setItem('token', access);
       localStorage.setItem('refresh', refresh);
       localStorage.setItem('username', username);
 
-      setMessage('Login successful! Redirecting...');
+      
+      setMessage(`Welcome, ${username}! Redirecting...`);
+
       setTimeout(() => {
         navigate('/dashboard');
       }, 1500);
