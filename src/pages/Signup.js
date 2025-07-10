@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaSpinner, FaEye, FaEyeSlash } from 'react-icons/fa';
-import './Signup.css';
+import Profile from '../images/assets/003.jpg'; // Replace with your logo
+import './Signup.css'; // Use separate CSS or reuse Login.css
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -35,71 +36,34 @@ const Signup = () => {
     setShowPassword(prev => !prev);
   };
 
-  const handleChange = e => {
+  const handleChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async e => {
-  e.preventDefault();
-  setError('');
-  setMessage('');
-  setLoading(true);
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
-  if (!formData.username || !formData.email || !formData.password) {
-    setError('Please fill out all fields.');
-    setLoading(false);
-    return;
-  }
+    try {
+      const response = await axios.post(`${API_URL}/signup/`, formData, {
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-  try {
-    // Signup
-    const response = await axios.post(`${API_URL}/signup/`, formData, {
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    const user = response.data;
-    setMessage(`Welcome, ${user.username}! Logging you in...`);
-
-    // Auto login
-    const loginRes = await axios.post(`${API_URL}/login/`, {
-      username: formData.username,
-      password: formData.password,
-    });
-
-    const { access, refresh } = loginRes.data;
-    if (access && refresh) {
-      localStorage.setItem('token', access);
-      localStorage.setItem('refresh', refresh);
-      localStorage.setItem('username', formData.username);
-
-      // Redirect
-      setTimeout(() => navigate('/dashboard'), 1000);
-    } else {
-      setError('Login failed: Token not received.');
+      setMessage(response.data.message);
+      setTimeout(() => navigate('/login'), 1500);
+    } catch (err) {
+      setError('Signup failed. Try a different username or email.');
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error('Signup error:', err.response?.data);
-    if (err.response?.data?.username) {
-      setError(`Username: ${err.response.data.username[0]}`);
-    } else if (err.response?.data?.email) {
-      setError(`Email: ${err.response.data.email[0]}`);
-    } else if (err.response?.data?.password) {
-      setError(`Password: ${err.response.data.password[0]}`);
-    } else if (err.response?.data?.detail) {
-      setError(err.response.data.detail);
-    } else {
-      setError('Something went wrong. Please try again.');
-    }
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
-    <div className="signup-wrapper">
-      <form onSubmit={handleSubmit} className="signup-form">
-        <img src="/images/logo.png" alt="App Logo" className="logo" />
+    <div className="login-wrapper">
+      <form onSubmit={handleSubmit} className="login-form animated-card">
+        <div className="logo-area">
+          <img src={Profile} alt="Logo" className="logo" />
+        </div>
         <h2 className="typewriter">{typedText}</h2>
 
         <label>Username</label>
@@ -109,8 +73,7 @@ const Signup = () => {
           value={formData.username}
           onChange={handleChange}
           required
-          disabled={loading}
-          placeholder="Enter username"
+          className="input-field"
         />
 
         <label>Email</label>
@@ -120,8 +83,7 @@ const Signup = () => {
           value={formData.email}
           onChange={handleChange}
           required
-          disabled={loading}
-          placeholder="you@example.com"
+          className="input-field"
         />
 
         <label>Password</label>
@@ -132,8 +94,7 @@ const Signup = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            disabled={loading}
-            placeholder="••••••••"
+            className="input-field"
           />
           <button
             type="button"
@@ -145,13 +106,13 @@ const Signup = () => {
           </button>
         </div>
 
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className="login-btn">
           {loading ? (
             <>
-              Signing Up <FaSpinner className="spin" />
+              Signing up <FaSpinner className="spin" />
             </>
           ) : (
-            'Sign Up'
+            'Signup'
           )}
         </button>
 
