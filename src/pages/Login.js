@@ -45,16 +45,19 @@ const Login = () => {
 
     
     try {
-      const response = await axios.post(`${API_URL}/signup/`, formData, {
-  headers: { 'Content-Type': 'application/json' },
-});
+      const response = await axios.post(`${API_URL}/login/`, formData, {
+        headers: { 'Content-Type': 'application/json' },
+    });
 
 
-      const { username, access, refresh } = response.data;
 
-      localStorage.setItem('token', access);
-      localStorage.setItem('refresh', refresh);
-      localStorage.setItem('username', username);
+      const { access, refresh } = response.data;
+const decodedToken = JSON.parse(atob(access.split('.')[1]));
+const username = decodedToken.username || decodedToken.user_id; // depends on your token payload
+
+localStorage.setItem('token', access);
+localStorage.setItem('refresh', refresh);
+localStorage.setItem('username', username);
 
       
       setMessage(`Welcome, ${username}! Redirecting...`);
