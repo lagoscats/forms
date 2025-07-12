@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaSpinner, FaEye, FaEyeSlash } from 'react-icons/fa';
-import Profile from '../images/assets/003.jpg'; // 🐾 Replace with your icon
+import Profile from '../images/assets/003.jpg';
 import './Login.css';
 
 const Login = () => {
@@ -32,7 +32,6 @@ const Login = () => {
   }, []);
 
   const togglePasswordVisibility = () => setShowPassword(prev => !prev);
-  
 
   const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,29 +41,30 @@ const Login = () => {
   e.preventDefault();
   setError('');
   setLoading(true);
+
   try {
-    const response = await axios.post(`${API_URL}/login/`, formData, {
-      headers: { 'Content-Type': 'application/json' },
+    const response = await axios.post(`${API_URL}/login/`, {
+      username: formData.username,
+      password: formData.password,
+    }, {
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
-    const { access, refresh, username } = response.data;
+    console.log("Login successful:", response.data);
+    setMessage("Login successful!");
 
-    console.log('Login response:', response.data); // ⬅️ Add this for debugging
+    // ✅ Redirect after login
+    navigate('/dashboard');
 
-    localStorage.setItem('token', access);
-    localStorage.setItem('refresh', refresh);
-    localStorage.setItem('username', username);
-
-    setMessage(`Welcome, ${username}! Redirecting...`);
-    setTimeout(() => navigate('/dashboard'), 1500);
-  } catch (err) {
-    console.error(err);
-    setError('Invalid credentials');
+  } catch (error) {
+    console.error("Login error:", error.response?.data || error.message);
+    setError(error.response?.data?.error || "Login failed. Check your credentials.");
   } finally {
     setLoading(false);
   }
 };
-
 
   return (
     <div className="login-wrapper">
