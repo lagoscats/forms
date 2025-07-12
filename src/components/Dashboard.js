@@ -11,6 +11,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
+    console.log('Loaded username from localStorage:', storedUsername);
+
     if (storedUsername) {
       setUsername(storedUsername.charAt(0).toUpperCase() + storedUsername.slice(1));
     } else {

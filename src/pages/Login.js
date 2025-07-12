@@ -7,7 +7,11 @@ import './Login.css';
 
 const Login = () => {
   const navigate = useNavigate();
-  const API_URL = process.env.REACT_APP_API_URL;
+
+  const API_URL =
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:8001/api'
+      : 'https://chinedu2026.pythonanywhere.com/api';
 
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
@@ -28,36 +32,39 @@ const Login = () => {
   }, []);
 
   const togglePasswordVisibility = () => setShowPassword(prev => !prev);
+  
 
   const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async e => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-    try {
-      const response = await axios.post(`${API_URL}/login/`, formData, {
-        headers: { 'Content-Type': 'application/json' },
-      });
+  e.preventDefault();
+  setError('');
+  setLoading(true);
+  try {
+    const response = await axios.post(`${API_URL}/login/`, formData, {
+      headers: { 'Content-Type': 'application/json' },
+    });
 
-      const { access, refresh } = response.data;
-      const decodedToken = JSON.parse(atob(access.split('.')[1]));
-      const username = decodedToken.username || decodedToken.user_id;
+    const { access, refresh, username } = response.data;
 
-      localStorage.setItem('token', access);
-      localStorage.setItem('refresh', refresh);
-      localStorage.setItem('username', username);
+    console.log('Login response:', response.data); // ⬅️ Add this for debugging
 
-      setMessage(`Welcome, ${username}! Redirecting...`);
-      setTimeout(() => navigate('/dashboard'), 1500);
-    } catch (err) {
-      setError('Invalid credentials');
-    } finally {
-      setLoading(false);
-    }
-  };
+    localStorage.setItem('token', access);
+    localStorage.setItem('refresh', refresh);
+    localStorage.setItem('username', username);
+
+    setMessage(`Welcome, ${username}! Redirecting...`);
+    setTimeout(() => navigate('/dashboard'), 1500);
+  } catch (err) {
+    console.error(err);
+    setError('Invalid credentials');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="login-wrapper">
