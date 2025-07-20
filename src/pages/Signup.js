@@ -6,8 +6,13 @@ import Profile from '../images/assets/003.jpg'; // Replace with your logo
 import './Signup.css'; // Use separate CSS or reuse Login.css
 
 const Signup = () => {
+  
   const navigate = useNavigate();
-  const API_URL = process.env.REACT_APP_API_URL;
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  const API_URL = isProduction
+  ? 'https://chinedu2026.pythonanywhere.com/api'
+  : process.env.REACT_APP_API_URL || 'http://localhost:8001/api';
 
   const [formData, setFormData] = useState({
     username: '',
@@ -46,6 +51,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(`${API_URL}/signup/`, formData, {
+ 
         headers: { 'Content-Type': 'application/json' },
       });
 

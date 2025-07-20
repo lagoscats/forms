@@ -1,6 +1,6 @@
 // src/App.js
 import React from 'react';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom'; // ✅ Use HashRouter
+import { HashRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
@@ -16,12 +16,16 @@ import Settings from './components/Settings';
 import PrivateRoute from './components/PrivateRoute';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsConditions from './components/TermsConditions';
+import AdmissionForm from './pages/AdmissionForm';
 
+const AppContent = () => {
+  const location = useLocation();
+  const hideNavbar = location.pathname === '/dashboard'; // Adjust this list if needed
 
-const App = () => {
   return (
-    <Router>
-      <Navbar />
+    <>
+      {!hideNavbar && <Navbar />}
+
       <div className="content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -33,17 +37,25 @@ const App = () => {
           <Route path="/terms" element={<TermsConditions />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/services" element={<Services />} />
-          <Route path="*" element={<Missing />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/footer" element={<Footer />} />
+          <Route path="/admission-form" element={<AdmissionForm />} />
           <Route path="/dashboard" element={
             <PrivateRoute>
               <Dashboard />
             </PrivateRoute>
-    }
-  />
+          } />
+          <Route path="*" element={<Missing />} />
         </Routes>
       </div>
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 };
