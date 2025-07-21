@@ -1,119 +1,41 @@
-.dashboard-container {
+.dashboard-wrapper {
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 2rem;
-  background: linear-gradient(to right, #f4f6ff, #e1ecff);
-  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #f5f7fa, #c3cfe2);
 }
 
 .dashboard-card {
   background: #fff;
   padding: 2rem 3rem;
-  border-radius: 20px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
-  max-width: 700px;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   width: 100%;
-  animation: slideIn 0.5s ease forwards;
+  max-width: 450px;
+  transition: all 0.3s ease-in-out;
 }
 
-@keyframes slideIn {
-  0% {
-    transform: translateY(20px);
+.animated-card {
+  animation: fadeIn 0.7s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
     opacity: 0;
+    transform: translateY(15px);
   }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.dashboard-card h1 {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 1rem;
-}
-
-.dashboard-card p {
-  font-size: 1rem;
-  color: #555;
-  margin: 0.3rem 0;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.stat-card {
-  background: #f2f6ff;
-  padding: 1rem 1.2rem;
-  border-radius: 16px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-4px);
-}
-
-.stat-card h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.1rem;
-  color: #3a3a3a;
-}
-
-.stat-card p {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #1e40af;
-}
-
-.logout-btn {
-  margin-top: 2rem;
-  padding: 0.6rem 1.5rem;
-  font-size: 1rem;
-  background: #1e40af;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.logout-btn:hover {
-  background: #1d4ed8;
-}
-
-.loading-spinner-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.spinner {
-  width: 35px;
-  height: 35px;
-  border: 4px solid #d1d5db;
-  border-top: 4px solid #1e40af;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 0.5rem;
-}
-
-@keyframes spin {
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.error-message {
-  background: #fee2e2;
-  color: #991b1b;
-  padding: 1rem;
-  border-radius: 10px;
-  text-align: center;
+.error {
+  color: #d90429;
+  margin-top: 1rem;
+}
+
+.user-info p {
+  margin: 0.5rem 0;
 }
