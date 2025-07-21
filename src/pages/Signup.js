@@ -2,17 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaSpinner, FaEye, FaEyeSlash } from 'react-icons/fa';
-import Profile from '../images/assets/003.jpg'; // Replace with your logo
-import './Signup.css'; // Use separate CSS or reuse Login.css
+import Profile from '../images/assets/003.jpg';
+import './Signup.css';
+
+const API_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8001/api'
+    : 'https://fidelis1981.pythonanywhere.com/api';
 
 const Signup = () => {
-  
   const navigate = useNavigate();
-  const isProduction = process.env.NODE_ENV === 'production';
-
-  const API_URL = isProduction
-  ? 'https://chinedu2026.pythonanywhere.com/api'
-  : process.env.REACT_APP_API_URL || 'http://localhost:8001/api';
 
   const [formData, setFormData] = useState({
     username: '',
@@ -37,9 +36,7 @@ const Signup = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(prev => !prev);
-  };
+  const togglePasswordVisibility = () => setShowPassword(prev => !prev);
 
   const handleChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -51,14 +48,17 @@ const Signup = () => {
 
     try {
       const response = await axios.post(`${API_URL}/signup/`, formData, {
- 
         headers: { 'Content-Type': 'application/json' },
       });
 
-      setMessage(response.data.message);
-      setTimeout(() => navigate('/login'), 1500);
+      setMessage(response.data.message || 'Signup successful!');
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
-      setError('Signup failed. Try a different username or email.');
+      console.error('Signup failed:', err.response?.data || err.message);
+      setError(
+        err.response?.data?.error ||
+          'Signup failed. Try a different username or email.'
+      );
     } finally {
       setLoading(false);
     }
@@ -70,6 +70,7 @@ const Signup = () => {
         <div className="logo-area">
           <img src={Profile} alt="Logo" className="logo" />
         </div>
+
         <h2 className="typewriter">{typedText}</h2>
 
         <label>Username</label>
