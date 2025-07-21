@@ -1,4 +1,4 @@
-/* Login.css */
+/* General Layout */
 .login-wrapper {
   min-height: 100vh;
   display: flex;
@@ -40,6 +40,7 @@
   color: #1f3c88;
 }
 
+/* Input Fields */
 .input-field {
   width: 100%;
   padding: 0.7rem;
@@ -54,21 +55,39 @@
   outline: none;
 }
 
+/* Wrapper to position eye icon */
 .password-wrapper {
   position: relative;
+  display: 'flex';
+  flex-direction: 'right';
+  justify-content: 'right';
+}
+
+.password-wrapper .input-field {
+  width: 100%;
+  padding-right: 3rem; /* Space for the eye icon */
+  box-sizing: border-box;
 }
 
 .toggle-btn {
   position: absolute;
-  right: 10px;
   top: 50%;
+  right: 0.9px;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
 }
 
+.toggle-btn:hover {
+  color: #1f3c88;
+}
 
+.toggle-btn:focus {
+  outline: none;
+}
+
+/* Submit Button */
 .login-btn {
   width: 100%;
   padding: 0.8rem;
@@ -85,6 +104,7 @@
   background-color: #2f4fa2;
 }
 
+/* Feedback Messages */
 .success {
   color: green;
   text-align: center;
@@ -103,6 +123,7 @@
   font-size: 0.9rem;
 }
 
+/* Spinner Animation */
 .spin {
   margin-left: 0.5rem;
   animation: spin 1s infinite linear;
@@ -130,7 +151,7 @@
   }
 }
 
-/* Mobile responsive */
+/* Mobile Responsive */
 @media (max-width: 480px) {
   .login-form {
     padding: 1.5rem;
