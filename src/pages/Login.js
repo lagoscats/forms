@@ -1,141 +1,99 @@
-import React, { useState, useEffect } from 'react'; 
-import { Link, useNavigate } from 'react-router-dom';
+// src/pages/Login.js
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { FaSpinner, FaEye, FaEyeSlash } from 'react-icons/fa';
-import Profile from '../images/assets/003.jpg';
-import { jwtDecode } from 'jwt-decode';  // <-- named import
 import './Login.css';
 
+const API_BASE_URL = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:8001'
+  : 'https://chinedu2026.pythonanywhere.com';
+
+const getPasswordStrength = (password) => {
+  if (password.length < 6) return 'Weak';
+  if (password.match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}/)) return 'Strong';
+  return 'Medium';
+};
+
 const Login = () => {
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [showPassword, setShowPassword] = useState(false);
+  const [strength, setStrength] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const API_URL =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:8001'
-    : 'https://Fidelis1981.pythonanywhere.com';
-
-  const [formData, setFormData] = useState({ username: '', password: '' });
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-  const [typedText, setTypedText] = useState('');
-  const fullText = 'Loogin to your account';
-
-  useEffect(() => {
-  let index = 0;
-  const interval = setInterval(() => {
-    setTypedText((prev) => prev + fullText.charAt(index));
-    index++;
-    if (index >= fullText.length) clearInterval(interval);
-  }, 80);
-
-  return () => clearInterval(interval); // Cleanup on unmount
-}, [fullText]);
-
-  const togglePasswordVisibility = () => setShowPassword(prev => !prev);
-
   const handleChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setCredentials(prev => ({ ...prev, [name]: value }));
+    if (name === 'password') setStrength(getPasswordStrength(value));
+    setError('');
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    setError('');
     setLoading(true);
-
     try {
-      const response = await axios.post(`${API_URL}/api/token/`, {
-       username: formData.username,
-        password: formData.password,
-      }, {
-        headers: { 'Content-Type': 'application/json' }
+      await axios.post(`${API_BASE_URL}/api/login/`, credentials, {
+        withCredentials: true,
       });
-
-
-      const { access, refresh } = response.data;
-      
-
-      localStorage.setItem('access', access);   // ← Fix key name
-      localStorage.setItem('refresh', refresh);
-      
-      const decoded = jwtDecode(access);
-      console.log('Decoded token:', decoded);
-
-      localStorage.setItem('username', decoded.username || formData.username);
-
-      setMessage('Login successful!');
       navigate('/dashboard');
-    } catch (error) {
-      console.error('Login error:', error.response?.data || error.message);
-      setError(error.response?.data?.error || 'Login failed. Check your credentials.');
+    } catch (err) {
+      setError('❌ Invalid username or password');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-  <div className="login-wrapper">
-    <form onSubmit={handleSubmit} className="login-form animated-card">
-      <div className="logo-area">
-        <img src={Profile} alt="EnuguCats Logo" className="logo" title="Welcome to EnuguCats" />
-      </div>
+    <div className="login-container">
+      <form onSubmit={handleSubmit} className="login-form">
+        <h2>🔐 Secure Login</h2>
 
-      <h2 className="typewriter">{typedText}</h2>
-
-      <label>Username</label>
-      <input
-        type="text"
-        name="username"
-        value={formData.username}
-        onChange={handleChange}
-        required
-        disabled={loading}
-        className="input-field"
-      />
-
-      <label>Password</label>
-      <div className="password-wrapper">
         <input
-          type={showPassword ? 'text' : 'password'}
-          name="password"
-          value={formData.password}
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={credentials.username}
           onChange={handleChange}
           required
-          disabled={loading}
-          className="input-field"
         />
-        <button
-          type="button"
-          onClick={togglePasswordVisibility}
-          className="toggle-btn"
-          tabIndex={-1}
-          aria-label="Toggle password visibility"
-        >
-          {showPassword ? <FaEyeSlash /> : <FaEye />}
-        </button>
-      </div>
 
-      <button type="submit" disabled={loading} className="login-btn">
-        {loading ? (
-          <>
-            Logging in <FaSpinner className="spin" />
-          </>
-        ) : (
-          'Login'
+        <div className="password-field">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            name="password"
+            placeholder="Password"
+            value={credentials.password}
+            onChange={handleChange}
+            required
+          />
+          <span
+            className="toggle-password"
+            onClick={() => setShowPassword(!showPassword)}
+            title={showPassword ? 'Hide password' : 'Show password'}
+          >
+            {showPassword ? '🙈' : '👁️'}
+          </span>
+        </div>
+
+        {credentials.password && (
+          <p className={`strength ${strength.toLowerCase()}`}>
+            Password strength: {strength}
+          </p>
         )}
-      </button>
 
-      {message && <p className="success">{message}</p>}
-      {error && <p className="error">{error}</p>}
+        {error && <p className="error">{error}</p>}
 
-      <p className="link-note">
-        Don’t have an account? <Link to="/signup">Signup</Link>
-      </p>
-          </form>
+        <button type="submit" disabled={loading}>
+          {loading ? <div className="spinner" /> : 'Login'}
+        </button>
+
+        <p className="redirect-link">
+          Don’t have an account? <Link to="/signup">Sign up here</Link>
+        </p>
+      </form>
     </div>
   );
 };
 
 export default Login;
-

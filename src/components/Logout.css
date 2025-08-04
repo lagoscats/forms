@@ -1,0 +1,84 @@
+/* src/pages/Logout.css */
+.logout-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #0f172a, #1e293b);
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.logout-text {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #cbd5e1;
+  border-top: 6px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-top: 10px;
+}
+
+.success-animation, .error-animation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.checkmark {
+  font-size: 3rem;
+  color: #10b981;
+  animation: bounce 0.5s ease;
+}
+
+.success-message {
+  margin-top: 10px;
+  font-size: 1.3rem;
+  color: #a7f3d0;
+}
+
+.error-mark {
+  font-size: 3rem;
+  color: #f87171;
+  animation: shake 0.5s ease;
+}
+
+.error-message {
+  margin-top: 10px;
+  font-size: 1.3rem;
+  color: #fca5a5;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes bounce {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}

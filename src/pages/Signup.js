@@ -1,133 +1,105 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+// src/pages/Signup.js
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { FaSpinner, FaEye, FaEyeSlash } from 'react-icons/fa';
-import Profile from '../images/assets/003.jpg';
 import './Signup.css';
 
-const API_URL =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:8001/api'
-    : 'https://fidelis1981.pythonanywhere.com/api';
+const API_BASE_URL = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:8001'
+  : 'https://chinedu2026.pythonanywhere.com';
 
 const Signup = () => {
+  const [formData, setFormData] = useState({ username: '', email: '', password: '' });
+  const [loading, setLoading] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [error, setError] = useState('');
+  const [strength, setStrength] = useState('');
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-  });
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    setError('');
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-  const [typedText, setTypedText] = useState('');
-  const fullText = 'Create your account';
+    if (name === 'password') {
+      evaluatePasswordStrength(value);
+    }
+  };
 
-  useEffect(() => {
-    let i = 0;
-    const interval = setInterval(() => {
-      setTypedText(fullText.slice(0, i));
-      i++;
-      if (i > fullText.length) clearInterval(interval);
-    }, 80);
-    return () => clearInterval(interval);
-  }, []);
-
-  const togglePasswordVisibility = () => setShowPassword(prev => !prev);
-
-  const handleChange = e =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const evaluatePasswordStrength = password => {
+    if (password.length < 6) setStrength('Weak');
+    else if (password.match(/[A-Z]/) && password.match(/[0-9]/)) setStrength('Strong');
+    else setStrength('Moderate');
+  };
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setError('');
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/signup/`, formData, {
-        headers: { 'Content-Type': 'application/json' },
-      });
-
-      setMessage(response.data.message || 'Signup successful!');
-      setTimeout(() => navigate('/login'), 2000);
+      await axios.post(`${API_BASE_URL}/api/signup/`, formData);
+      navigate('/login');
     } catch (err) {
-      console.error('Signup failed:', err.response?.data || err.message);
-      setError(
-        err.response?.data?.error ||
-          'Signup failed. Try a different username or email.'
-      );
+      setError('Signup failed. Try a different username or password.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-wrapper">
-      <form onSubmit={handleSubmit} className="login-form animated-card">
-        <div className="logo-area">
-          <img src={Profile} alt="Logo" className="logo" />
-        </div>
+    <div className="signup-container">
+      <form onSubmit={handleSubmit} className="signup-form">
+        <h2>📝 Create Account</h2>
 
-        <h2 className="typewriter">{typedText}</h2>
-
-        <label>Username</label>
         <input
           type="text"
           name="username"
+          placeholder="Username"
           value={formData.username}
           onChange={handleChange}
           required
-          className="input-field"
         />
 
-        <label>Email</label>
         <input
           type="email"
           name="email"
+          placeholder="Email"
           value={formData.email}
           onChange={handleChange}
           required
-          className="input-field"
         />
 
-        <label>Password</label>
         <div className="password-wrapper">
           <input
-            type={showPassword ? 'text' : 'password'}
+            type={passwordVisible ? 'text' : 'password'}
             name="password"
+            placeholder="Password"
             value={formData.password}
             onChange={handleChange}
             required
-            className="input-field"
           />
-          <button
-            type="button"
-            onClick={togglePasswordVisibility}
-            className="toggle-btn"
-            title={showPassword ? 'Hide password' : 'Show password'}
+          <span
+            className="eye-icon"
+            onClick={() => setPasswordVisible(!passwordVisible)}
           >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
-          </button>
+            {passwordVisible ? '👁️‍🗨️' : '🙈'}
+          </span>
         </div>
 
-        <button type="submit" disabled={loading} className="login-btn">
-          {loading ? (
-            <>
-              Signing up <FaSpinner className="spin" />
-            </>
-          ) : (
-            'Signup'
-          )}
-        </button>
+        {formData.password && (
+          <p className={`password-strength ${strength.toLowerCase()}`}>
+            Strength: {strength}
+          </p>
+        )}
 
-        {message && <p className="success">{message}</p>}
         {error && <p className="error">{error}</p>}
 
-        <p className="link-note">
-          Already have an account? <Link to="/login">Login</Link>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Creating account...' : 'Sign Up'}
+        </button>
+
+        <p className="redirect-text">
+          Already have an account? <Link to="/login">Login here</Link>
         </p>
       </form>
     </div>

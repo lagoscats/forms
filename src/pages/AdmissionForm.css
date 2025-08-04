@@ -1,109 +1,132 @@
 .admission-form-container {
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 30px;
-  background: #fefefe;
+  max-width: 600px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-  animation: fadeIn 0.5s ease-in-out;
-  border: 1px solid #e0e0e0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.6s ease-in-out;
 }
 
-.form-heading {
+.form-title {
   text-align: center;
-  font-size: 1.9rem;
-  margin-bottom: 20px;
-  font-weight: 600;
-  color: #1f3c88; /* Strong modern primary color */
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1.5rem;
 }
 
-.animated-form input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
+.admission-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.admission-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #222;
+}
+
+.admission-form input[type='text'],
+.admission-form input[type='email'],
+.admission-form input[type='file'] {
+  padding: 0.8rem;
   border: 1px solid #ccc;
   border-radius: 8px;
-  font-size: 1rem;
-  background-color: #f9f9f9;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 0.5rem;
+  transition: border 0.3s ease;
 }
 
-.animated-form input:focus {
-  border-color: #1f3c88;
+.admission-form input:focus {
+  border-color: #007bff;
   outline: none;
-  background-color: #fff;
-  box-shadow: 0 0 0 3px rgba(31, 60, 136, 0.1);
 }
 
-.image-preview {
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.image-preview img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 10px;
-  border: 2px solid #1f3c88;
-  animation: popIn 0.3s ease-in;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  font-size: 1rem;
-  font-weight: 600;
-  background: linear-gradient(to right, #1f3c88, #4a63d0);
+.submit-btn {
+  background-color: #007bff;
   color: #fff;
+  padding: 0.9rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
   transition: background 0.3s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-button:hover {
-  background: linear-gradient(to right, #183177, #3b54bd);
+.submit-btn:hover {
+  background-color: #0056b3;
 }
 
-button:disabled {
-  background: #b0b0b0;
-  cursor: not-allowed;
-}
-
-.spinner {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #ffffff;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  animation: spin 1s linear infinite;
-}
-
-.form-message {
+.form-error {
+  color: #d9534f;
   text-align: center;
-  margin-top: 15px;
+  margin-top: 1rem;
   font-weight: 500;
-  font-size: 0.95rem;
-  color: #1f3c88;
-  animation: fadeIn 0.4s ease-in-out;
+}
+
+.success-message {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #28a745;
+  font-weight: bold;
+}
+
+.file-preview {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.doc-preview {
+  max-width: 100%;
+  max-height: 250px;
+  margin-top: 0.5rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .admission-form-container {
+    margin: 2rem 1rem;
+    padding: 1.5rem;
+  }
+
+  .form-title {
+    font-size: 1.8rem;
+  }
+
+  .submit-btn {
+    font-size: 0.95rem;
+  }
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@keyframes popIn {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.login-required-message {
+  animation: fadeIn 0.6s ease-in-out;
 }

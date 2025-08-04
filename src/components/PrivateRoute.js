@@ -1,32 +1,36 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
+
+const API_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8001'
+    : 'https://fidelis1981.pythonanywhere.com';
 
 const PrivateRoute = ({ children }) => {
-  const token = localStorage.getItem('access');
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
-  if (!token) {
-    console.warn("No token found");
-    return <Navigate to="/login" replace />;
-  }
+  useEffect(() => {
+    let isMounted = true;
 
-  try {
-    const decoded = jwtDecode(token);
-    const currentTime = Date.now() / 1000;
+    axios.get(`${API_URL}/api/users/user/`, {
+      withCredentials: true,
+    })
+    .then(res => {
+      if (isMounted) setIsAuthenticated(true);
+    })
+    .catch(err => {
+      console.error("Not authenticated:", err.response?.data || err.message);
+      if (isMounted) setIsAuthenticated(false);
+    });
 
-    if (decoded.exp < currentTime) {
-      console.warn("Token expired");
-      localStorage.clear();
-      return <Navigate to="/login" replace />;
-    }
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
-    return children;
-
-  } catch (error) {
-    console.error("Invalid token format:", error.message);
-    localStorage.clear();
-    return <Navigate to="/login" replace />;
-  }
+  if (isAuthenticated === null) return <p>Loading...</p>;
+  return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

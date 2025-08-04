@@ -1,0 +1,38 @@
+.notice-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.notice-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notice-item {
+  display: flex;
+  align-items: flex-start;
+  background: #f9f9f9;
+  margin-bottom: 10px;
+  padding: 12px;
+  border-left: 4px solid #4caf50;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.notice-icon {
+  font-size: 1.5rem;
+  margin-right: 12px;
+}
+
+.notice-content h4 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.notice-date {
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 4px;
+}
